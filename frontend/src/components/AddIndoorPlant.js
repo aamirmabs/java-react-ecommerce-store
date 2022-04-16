@@ -1,12 +1,36 @@
 import React from "react";
 
 const AddIndoorPlant = () => {
+  // JSON object to add the plant to the database:
+  //   {
+  //     "sku": "INDOOR-PLANT-2000",
+  //     "name": "TEST",
+  //     "description": "Test",
+  //     "unitPrice": "19.99",
+  //     "imageUrl": "assets/images/products/placeholder.png",
+  //     "active": "true",
+  //     "unitsInStock": 100,
+  //     "dateCreated": "2022-04-09T18:01:48.000+00:00",
+  //     "lastUpdated": "2022-04-09T18:10:48.000+00:00"
+  //     "category" : "/api/product-category/1",
+  // }
+
   return (
     <div className="flex max-w-2xl mx-auto shadow border-b">
       <div className="px-8 py-8">
         <div className="font-thin text-2xl tracking-wider">
           <h1>Add Indoor Plant</h1>
         </div>
+        {/* sku */}
+        <div className="items-center justify-center w-full">
+          <label className="block text-gray-600 text-sm font-normal">SKU</label>
+          <input
+            className="h-10 w-96 border mt-2 p-2 rounded-lg"
+            type="text"
+            placeholder="SKU Eg: INDOOR-PLANT-1006"
+          ></input>
+        </div>
+
         {/* product name */}
         <div className="items-center justify-center w-full">
           <label className="block text-gray-600 text-sm font-normal">
@@ -40,7 +64,7 @@ const AddIndoorPlant = () => {
           <input
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type={"number"}
-            placeholder="Unit Price Here"
+            placeholder="Price Here"
           ></input>
         </div>
 
@@ -52,7 +76,7 @@ const AddIndoorPlant = () => {
           <input
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type="text"
-            placeholder="Image Url Here"
+            placeholder="Url Here"
           ></input>
         </div>
 
@@ -72,7 +96,7 @@ const AddIndoorPlant = () => {
           <input
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type={"number"}
-            placeholder="Units in Stock Here"
+            placeholder="Units Here"
           ></input>
         </div>
 
