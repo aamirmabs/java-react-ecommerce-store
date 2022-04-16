@@ -5,6 +5,12 @@ const PRODUCT_CATEGORY_BASE_URL = "localhost:8080/api/product-category";
 
 const INDOOR_PLANTS_URL =
   "http://localhost:8080/api/product-category/1/products";
+const OUTDOOR_PLANTS_URL =
+  "http://localhost:8080/api/product-category/2/products";
+const TOOLS_URL =
+  "http://localhost:8080/api/product-category/3/products";
+const ACCESSORIES_URL =
+  "http://localhost:8080/api/product-category/4/products";
 
 class ProductService {
   saveProduct(product) {
@@ -16,6 +22,15 @@ class ProductService {
   }
 
   getIndoorPlants() {
+    return axios.get(INDOOR_PLANTS_URL);
+  }
+  getOutdoorPlants() {
+    return axios.get(OUTDOOR_PLANTS_URL);
+  }
+  getToolsPlants() {
+    return axios.get(TOOLS_URL);
+  }
+  getAccessories() {
     return axios.get(INDOOR_PLANTS_URL);
   }
 }

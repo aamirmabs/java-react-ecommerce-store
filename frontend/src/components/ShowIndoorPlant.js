@@ -16,19 +16,10 @@ function ShowIndoorPlant() {
       try {
         await ProductService.getIndoorPlants()
           .then((res) => {
-            // console.log(res);
             return res.data;
           })
           .then((data) => {
-            // console.log("data");
-            // console.log(data);
-            // console.log("data._embedded");
-            // console.log(data._embedded);
-            // console.log("data._embedded.products");
-            // console.log(data._embedded.products);
-
             setProducts(data._embedded.products);
-            console.log(products);
           });
       } catch (error) {
         console.log(error);
@@ -42,28 +33,48 @@ function ShowIndoorPlant() {
 
   return (
     <div>
-      <button
-        className="rounded text-white bg-green-500 hover:bg-green-700 px-4 py-2 mx-2 my-4"
-        onClick={() => navigate("/indoor-plants/add")}
-      >
-        Add Indoor Plant
-      </button>
-      <div className="grid grid-cols-4 gap-4 p-4">
+      <div className="flex flex-col  items-center justify-center w-full">
+        <h1 className="font-medium leading-tight text-5xl m-1 text-green-800">
+          Indoor Plants
+        </h1>
+        <button
+          className="rounded text-white bg-green-700 hover:bg-green-900 px-4 py-2 m-1 w-96"
+          onClick={() => navigate("/indoor-plants/add")}
+        >
+          Add Indoor Plant
+        </button>
+      </div>
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 md:gap-2 p-2">
         {loading
           ? "Loading..."
           : products.map((product) => {
               return (
-                <div class="w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden">
-                  <div class="flex items-end justify-end h-56 w-full">
+                <div
+                  className="w-full max-w-sm mx-auto rounded-md shadow-sm hover:shadow-md overflow-hidden"
+                  key={product.name}
+                >
+                  <div className="flex items-end justify-center w-full">
                     <img
                       className="object-fill"
-                      src={"/images/products/placeholder.png"}
+                      // src={"/images/products/placeholder.png"}
+                      src={
+                        "https://res.cloudinary.com/patch-gardens/image/upload/c_fill,f_auto,h_800,q_auto:good,w_800/v1564154462/products/kentia-palm-1a5d98.jpg"
+                      }
                       alt={product.name}
                     ></img>
                   </div>
-                  <div class="px-5 py-3">
-                    <h3 class="text-gray-700 uppercase">{product.name}</h3>
-                    <span class="text-gray-500 mt-2">${product.unitPrice}</span>
+                  <div className="flex flex-col px-5 py-3">
+                    <h3 className="text-gray-700 uppercase">{product.name}</h3>
+                    <span className="text-gray-500 mt-2">
+                      ${product.unitPrice}
+                    </span>
+
+                    <button
+                      className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-1 w-full"
+                      onClick={() => console.log("Add to cart")}
+                    >
+                      Add to Cart
+                    </button>
                   </div>
                 </div>
               );

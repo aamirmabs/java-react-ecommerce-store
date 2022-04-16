@@ -26,7 +26,7 @@ const AddIndoorPlant = () => {
     unitsInStock: "",
     dateCreated: "",
     lastUpdated: "",
-    category: "",
+    category: "/api/product-category/1",
   });
 
   const handleChange = (e) => {
