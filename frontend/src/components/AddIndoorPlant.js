@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const AddIndoorPlant = () => {
   // JSON object to add the plant to the database:
@@ -15,6 +15,31 @@ const AddIndoorPlant = () => {
   //     "category" : "/api/product-category/1",
   // }
 
+  const [indoorPlant, setIndoorPlant] = useState({
+    sku: "",
+    name: "",
+    description: "",
+    unitPrice: "",
+    imageUrl: "",
+    active: true,
+    unitsInStock: "",
+    dateCreated: "",
+    lastUpdated: "",
+    category: "",
+  });
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setIndoorPlant((prevState) => ({ ...prevState, [name]: value }));
+  };
+  const handleCheckbox = (e) => {
+    const { name } = e.target;
+    setIndoorPlant((prevState) => ({
+      ...prevState,
+      [name]: !prevState.active,
+    }));
+  };
+
   return (
     <div className="flex max-w-2xl mx-auto shadow border-b">
       <div className="px-8 py-8">
@@ -25,6 +50,9 @@ const AddIndoorPlant = () => {
         <div className="items-center justify-center w-full">
           <label className="block text-gray-600 text-sm font-normal">SKU</label>
           <input
+            name="sku"
+            value={indoorPlant.sku}
+            onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type="text"
             placeholder="SKU Eg: INDOOR-PLANT-1006"
@@ -37,6 +65,9 @@ const AddIndoorPlant = () => {
             Name
           </label>
           <input
+            name="name"
+            value={indoorPlant.name}
+            onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type="text"
             placeholder="Plant Name Here"
@@ -49,6 +80,9 @@ const AddIndoorPlant = () => {
             Description
           </label>
           <textarea
+            name="description"
+            value={indoorPlant.description}
+            onChange={(e) => handleChange(e)}
             className="w-96 border mt-2 p-2 rounded-lg"
             rows={5}
             cols={5}
@@ -62,6 +96,9 @@ const AddIndoorPlant = () => {
             Unit Price
           </label>
           <input
+            name="unitPrice"
+            value={indoorPlant.unitPrice}
+            onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type={"number"}
             placeholder="Price Here"
@@ -74,6 +111,9 @@ const AddIndoorPlant = () => {
             Image Url
           </label>
           <input
+            name="imageUrl"
+            value={indoorPlant.imageUrl}
+            onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type="text"
             placeholder="Url Here"
@@ -85,7 +125,13 @@ const AddIndoorPlant = () => {
           <label className="block text-gray-600 text-sm font-normal">
             Active
           </label>
-          <input className="mx-2" type="checkbox" />
+          <input
+            type="checkbox"
+            checked={indoorPlant.active}
+            name="active"
+            onChange={(e) => handleCheckbox(e)}
+            className="mx-2"
+          />
         </div>
 
         {/* unitsInStock */}
@@ -94,6 +140,9 @@ const AddIndoorPlant = () => {
             Units In Stock
           </label>
           <input
+            name="unitsInStock"
+            value={indoorPlant.unitsInStock}
+            onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type={"number"}
             placeholder="Units Here"
