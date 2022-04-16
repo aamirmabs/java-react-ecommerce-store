@@ -2,14 +2,9 @@ import "./App.css";
 
 function App() {
   return (
-    <div>
-      <header>
-        <h1>Plant-A-Tree Online</h1>
-        <h2>
-          An e-commerce plant store built with a Spring backend and React
-          frontend
-        </h2>
-        <p>SWE7102 Advanced Software Development</p>
+    <div className="bg-gray-800">
+      <header className="h-16 px-8 flex items-center">
+        <p className="text-white font-bold">Plant-A-Tree Store</p>
       </header>
     </div>
   );
