@@ -1,11 +1,12 @@
 import "./App.css";
+import AddIndoorPlant from "./components/AddIndoorPlant";
+import Navbar from "./components/Navbar.js";
 
 function App() {
   return (
-    <div className="bg-gray-800">
-      <header className="h-16 px-8 flex items-center">
-        <p className="text-white font-bold">Plant-A-Tree Store</p>
-      </header>
+    <div>
+      <Navbar />
+      <AddIndoorPlant />
     </div>
   );
 }
