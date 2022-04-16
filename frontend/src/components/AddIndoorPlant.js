@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ProductService from "../services/ProductService";
 
 const AddIndoorPlant = () => {
   // JSON object to add the plant to the database:
@@ -32,12 +33,26 @@ const AddIndoorPlant = () => {
     const { value, name } = e.target;
     setIndoorPlant((prevState) => ({ ...prevState, [name]: value }));
   };
+
   const handleCheckbox = (e) => {
     const { name } = e.target;
     setIndoorPlant((prevState) => ({
       ...prevState,
       [name]: !prevState.active,
     }));
+  };
+
+  const handleIndoorPlantSubmit = (e) => {
+    e.preventDefault();
+    ProductService.saveProduct(indoorPlant)
+      .then((res) => {
+        console.log("Axios response:");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log("Axios error:");
+        console.log(err);
+      });
   };
 
   return (
@@ -151,7 +166,10 @@ const AddIndoorPlant = () => {
 
         {/* Form buttons */}
         <div className="items-center justify-center w-full space-x-4 py-4">
-          <button className="rounded text-white font-semibold bg-green-600 hover:bg-green-800 px-6 py-2">
+          <button
+            className="rounded text-white font-semibold bg-green-600 hover:bg-green-800 px-6 py-2"
+            onClick={handleIndoorPlantSubmit}
+          >
             Save
           </button>
           <button className="rounded text-white font-semibold bg-red-600 hover:bg-red-800 px-6 py-2">
