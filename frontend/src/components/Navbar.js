@@ -50,10 +50,22 @@ function Navbar() {
                   Accessories
                 </a>
                 <a
-                  className="px-4 py-2 mt-2 text-sm font-semibold bg-green-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-green-900 focus:bg-green-900 focus:outline-none focus:shadow-outline"
+                  className="px-4 py-2 mt-2 text-sm font-semibold bg-green-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-green-600 focus:bg-green-600 focus:outline-none focus:shadow-outline"
                   href="/cart"
                 >
                   Cart
+                </a>
+                <a
+                  className="px-4 py-2 mt-2 text-sm font-semibold bg-green-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-green-600 focus:bg-green-600 focus:outline-none focus:shadow-outline"
+                  href="/login"
+                >
+                  Login
+                </a>
+                <a
+                  className="px-4 py-2 mt-2 text-sm font-semibold bg-red-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-red-600 focus:bg-red-600 focus:outline-none focus:shadow-outline"
+                  href="/logout"
+                >
+                  Log Out
                 </a>
               </nav>
             </div>
