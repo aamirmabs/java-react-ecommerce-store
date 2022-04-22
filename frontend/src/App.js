@@ -5,6 +5,8 @@ import AddIndoorPlant from "./components/AddIndoorPlant";
 import ShowIndoorPlant from "./components/ShowIndoorPlant";
 import AddOutdoorPlant from "./components/AddOutdoorPlant";
 import ShowOutdoorPlant from "./components/ShowOutdoorPlant";
+import AddTool from "./components/AddTool";
+import ShowTool from "./components/ShowTool";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
             path="/outdoor-plants/add"
             element={<AddOutdoorPlant />}
           ></Route>
+          <Route path="/tools" element={<ShowTool />}></Route>
+          <Route path="/tools/add" element={<AddTool />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

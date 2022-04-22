@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import ProductService from "../services/ProductService";
 
-const AddOutdoorPlant = () => {
-  const [outdoorPlant, setOutdoorPlant] = useState({
+const AddTool = () => {
+  const [tool, setTool] = useState({
     sku: "",
     name: "",
     description: "",
@@ -12,25 +12,25 @@ const AddOutdoorPlant = () => {
     unitsInStock: "",
     dateCreated: "",
     lastUpdated: "",
-    category: "/api/product-category/2",
+    category: "/api/product-category/3",
   });
 
   const handleChange = (e) => {
     const { value, name } = e.target;
-    setOutdoorPlant((prevState) => ({ ...prevState, [name]: value }));
+    setTool((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleCheckbox = (e) => {
     const { name } = e.target;
-    setOutdoorPlant((prevState) => ({
+    setTool((prevState) => ({
       ...prevState,
       [name]: !prevState.active,
     }));
   };
 
-  const handleIndoorPlantSubmit = (e) => {
+  const handleToolSubmit = (e) => {
     e.preventDefault();
-    ProductService.saveProduct(outdoorPlant)
+    ProductService.saveProduct(tool)
       .then((res) => {
         console.log("Axios response:");
         console.log(res);
@@ -45,14 +45,14 @@ const AddOutdoorPlant = () => {
     <div className="flex max-w-2xl mx-auto shadow border-b">
       <div className="px-8 py-8">
         <div className="font-thin text-2xl tracking-wider">
-          <h1>Add Outdoor Plant</h1>
+          <h1>Add Tool</h1>
         </div>
         {/* sku */}
         <div className="items-center justify-center w-full">
           <label className="block text-gray-600 text-sm font-normal">SKU</label>
           <input
             name="sku"
-            value={outdoorPlant.sku}
+            value={tool.sku}
             onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type="text"
@@ -67,7 +67,7 @@ const AddOutdoorPlant = () => {
           </label>
           <input
             name="name"
-            value={outdoorPlant.name}
+            value={tool.name}
             onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type="text"
@@ -82,7 +82,7 @@ const AddOutdoorPlant = () => {
           </label>
           <textarea
             name="description"
-            value={outdoorPlant.description}
+            value={tool.description}
             onChange={(e) => handleChange(e)}
             className="w-96 border mt-2 p-2 rounded-lg"
             rows={5}
@@ -98,7 +98,7 @@ const AddOutdoorPlant = () => {
           </label>
           <input
             name="unitPrice"
-            value={outdoorPlant.unitPrice}
+            value={tool.unitPrice}
             onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type={"number"}
@@ -113,7 +113,7 @@ const AddOutdoorPlant = () => {
           </label>
           <input
             name="imageUrl"
-            value={outdoorPlant.imageUrl}
+            value={tool.imageUrl}
             onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type="text"
@@ -128,7 +128,7 @@ const AddOutdoorPlant = () => {
           </label>
           <input
             type="checkbox"
-            checked={outdoorPlant.active}
+            checked={tool.active}
             name="active"
             onChange={(e) => handleCheckbox(e)}
             className="mx-2"
@@ -142,7 +142,7 @@ const AddOutdoorPlant = () => {
           </label>
           <input
             name="unitsInStock"
-            value={outdoorPlant.unitsInStock}
+            value={tool.unitsInStock}
             onChange={(e) => handleChange(e)}
             className="h-10 w-96 border mt-2 p-2 rounded-lg"
             type={"number"}
@@ -154,7 +154,7 @@ const AddOutdoorPlant = () => {
         <div className="items-center justify-center w-full space-x-4 py-4">
           <button
             className="rounded text-white font-semibold bg-green-600 hover:bg-green-800 px-6 py-2"
-            onClick={handleIndoorPlantSubmit}
+            onClick={handleToolSubmit}
           >
             Save
           </button>
@@ -167,4 +167,4 @@ const AddOutdoorPlant = () => {
   );
 };
 
-export default AddOutdoorPlant;
+export default AddTool;

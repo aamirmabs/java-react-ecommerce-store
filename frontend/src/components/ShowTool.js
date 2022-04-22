@@ -2,23 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductService from "../services/ProductService";
 
-function ShowIndoorPlant() {
+function ShowTool() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState(null);
+  const [tools, setTools] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
 
       try {
-        await ProductService.getIndoorPlants()
+        await ProductService.getTools()
           .then((res) => {
             return res.data;
           })
           .then((data) => {
-            setProducts(data._embedded.products);
+            setTools(data._embedded.products);
           });
       } catch (error) {
         console.log(error);
@@ -34,19 +34,19 @@ function ShowIndoorPlant() {
     <div>
       <div className="flex flex-col  items-center justify-center w-full">
         <h1 className="font-medium leading-tight text-5xl m-1 text-green-800">
-          Indoor Plants
+          Tools
         </h1>
         <button
           className="rounded text-white bg-green-700 hover:bg-green-900 px-4 py-2 m-1 w-96"
           onClick={() => navigate("/indoor-plants/add")}
         >
-          Add Indoor Plant
+          Add Tools
         </button>
       </div>
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 md:gap-2 p-2">
         {loading
           ? "Loading..."
-          : products.map((product) => {
+          : tools.map((product) => {
               return (
                 <div
                   className="w-full max-w-sm mx-auto rounded-md shadow-sm hover:shadow-md overflow-hidden"
@@ -83,4 +83,4 @@ function ShowIndoorPlant() {
   );
 }
 
-export default ShowIndoorPlant;
+export default ShowTool;
