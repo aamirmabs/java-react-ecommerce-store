@@ -7,6 +7,8 @@ import AddOutdoorPlant from "./components/AddOutdoorPlant";
 import ShowOutdoorPlant from "./components/ShowOutdoorPlant";
 import AddTool from "./components/AddTool";
 import ShowTool from "./components/ShowTool";
+import AddAccessory from "./components/AddAccessory";
+import ShowAccessories from "./components/ShowAccessories";
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           ></Route>
           <Route path="/tools" element={<ShowTool />}></Route>
           <Route path="/tools/add" element={<AddTool />}></Route>
+          <Route path="/accessories" element={<ShowAccessories />}></Route>
+          <Route path="/accessories/add" element={<AddAccessory />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

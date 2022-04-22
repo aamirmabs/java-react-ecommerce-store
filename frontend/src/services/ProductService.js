@@ -29,7 +29,7 @@ class ProductService {
     return axios.get(TOOLS_URL);
   }
   getAccessories() {
-    return axios.get(INDOOR_PLANTS_URL);
+    return axios.get(ACCESSORIES_URL);
   }
 }
 
