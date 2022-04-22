@@ -1,6 +1,16 @@
 import React from "react";
 
 function Navbar() {
+  // abstracting the css classes
+  const navbarItemCSS =
+    "px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline";
+
+  const navbarGreenBtn =
+    "px-4 py-2 mt-2 text-sm font-semibold bg-green-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-green-600 focus:bg-green-600 focus:outline-none focus:shadow-outline";
+
+  const navbarRedBtn =
+    "px-4 py-2 mt-2 text-sm font-semibold bg-red-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-red-600 focus:bg-red-600 focus:outline-none focus:shadow-outline";
+
   return (
     <div className="bg-gray-800">
       {/* <header className="h-16 px-8 flex items-center">
@@ -19,52 +29,28 @@ function Navbar() {
                 </a>
               </div>
               <nav className="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row">
-                <a
-                  className="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                  href="/products"
-                >
+                <a className={navbarItemCSS} href="/products">
                   All Products
                 </a>
-                <a
-                  className="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                  href="/indoor-plants"
-                >
+                <a className={navbarItemCSS} href="/indoor-plants">
                   Indoor Plants
                 </a>
-                <a
-                  className="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                  href="/outdoor-plants"
-                >
+                <a className={navbarItemCSS} href="/outdoor-plants">
                   Outdoor Plants
                 </a>
-                <a
-                  className="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                  href="/tools"
-                >
+                <a className={navbarItemCSS} href="/tools">
                   Tools
                 </a>
-                <a
-                  className="px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
-                  href="/accessories"
-                >
+                <a className={navbarItemCSS} href="/accessories">
                   Accessories
                 </a>
-                <a
-                  className="px-4 py-2 mt-2 text-sm font-semibold bg-green-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-green-600 focus:bg-green-600 focus:outline-none focus:shadow-outline"
-                  href="/cart"
-                >
+                <a className={navbarGreenBtn} href="/cart">
                   Cart
                 </a>
-                <a
-                  className="px-4 py-2 mt-2 text-sm font-semibold bg-green-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-green-600 focus:bg-green-600 focus:outline-none focus:shadow-outline"
-                  href="/login"
-                >
+                <a className={navbarGreenBtn} href="/login">
                   Login
                 </a>
-                <a
-                  className="px-4 py-2 mt-2 text-sm font-semibold bg-red-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-red-600 focus:bg-red-600 focus:outline-none focus:shadow-outline"
-                  href="/logout"
-                >
+                <a className={navbarRedBtn} href="/logout">
                   Log Out
                 </a>
               </nav>
