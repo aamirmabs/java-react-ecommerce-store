@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductService from "../services/ProductService";
+import { useCart } from "./../contexts/CartContext";
+
+// {
+//   sku: "",
+//   name: "",
+//   description: "",
+//   unitPrice: "",
+//   imageUrl: "",
+//   active: true,
+//   unitsInStock: "",
+//   dateCreated: "",
+//   lastUpdated: "",
+//   category: "/api/product-category/3",
+// }
 
 function ShowProducts() {
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState(true);
-  const [Products, setProducts] = useState(null);
+  const [products, setProducts] = useState(null);
+  const { itemsInCart, setItemsInCart } = useCart();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +53,7 @@ function ShowProducts() {
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 md:gap-2 p-2">
         {loading
           ? "Loading..."
-          : Products.map((product) => {
+          : products.map((product) => {
               return (
                 <div
                   className="w-full max-w-sm mx-auto rounded-md shadow-sm hover:shadow-md overflow-hidden"
@@ -64,7 +77,50 @@ function ShowProducts() {
 
                     <button
                       className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-1 w-full"
-                      onClick={() => console.log("Add to cart")}
+                      onClick={() =>
+                        setItemsInCart((prevItemsInCart) => {
+                          console.log("Clicked " + product.sku);
+
+                          // checking if the item is already in the cart and has quantity
+                          let newQuantity = 0;
+                          if (prevItemsInCart[product.sku]) {
+                            console.log("Item already in cart");
+                            let prevQuantity =
+                              prevItemsInCart[product.sku].quantity;
+                            console.log("prevQty: " + prevQuantity);
+                            newQuantity = prevQuantity + 1;
+                          } else {
+                            console.log("Item not in cart");
+                            newQuantity = 1;
+                          }
+                          console.log("newQty: " + newQuantity);
+
+                          let newCartItems = {
+                            ...prevItemsInCart,
+                            [product.sku]: {
+                              name: product.name,
+                              quantity: newQuantity,
+                              unitPrice: product.unitPrice,
+                            },
+                          };
+                          console.log("newCartItems: ");
+                          console.log(newCartItems);
+
+                          return newCartItems;
+
+                          // return {
+                          //   cartItems: "hello",
+                          //   newCartItems: "hello",
+                          //   boo: "boo",
+                          //   [product.sku]: {
+                          //     name: product.name,
+                          //     unitPrice: product.unitPrice,
+                          //     quantity: newQuantity,
+                          //   },
+                          //   ...prevItemsInCart,
+                          // };
+                        })
+                      }
                     >
                       Add to Cart
                     </button>
