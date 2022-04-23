@@ -10,6 +10,7 @@ import ShowTool from "./components/ShowTool";
 import AddAccessory from "./components/AddAccessory";
 import ShowAccessories from "./components/ShowAccessories";
 import ShowProducts from "./components/ShowProducts";
+import Homepage from "./components/Homepage";
 
 function App() {
   return (
@@ -17,8 +18,8 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route index element={<ShowProducts />}></Route>
-          <Route path="/" element={<ShowProducts />}></Route>
+          <Route index element={<Homepage />}></Route>
+          <Route path="/" element={<Homepage />}></Route>
           <Route path="/products" element={<ShowProducts />}></Route>
           <Route path="/indoor-plants" element={<ShowIndoorPlant />}></Route>
           <Route path="/indoor-plants/add" element={<AddIndoorPlant />}></Route>
