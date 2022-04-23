@@ -79,46 +79,28 @@ function ShowProducts() {
                       className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-1 w-full"
                       onClick={() =>
                         setItemsInCart((prevItemsInCart) => {
-                          console.log("Clicked " + product.sku);
-
                           // checking if the item is already in the cart and has quantity
                           let newQuantity = 0;
                           if (prevItemsInCart[product.sku]) {
-                            console.log("Item already in cart");
-                            let prevQuantity =
-                              prevItemsInCart[product.sku].quantity;
-                            console.log("prevQty: " + prevQuantity);
-                            newQuantity = prevQuantity + 1;
+                            newQuantity =
+                              prevItemsInCart[product.sku].quantity + 1;
+                            return {
+                              ...prevItemsInCart,
+                              [product.sku]: {
+                                ...prevItemsInCart[product.sku],
+                                quantity: newQuantity,
+                              },
+                            };
                           } else {
-                            console.log("Item not in cart");
-                            newQuantity = 1;
+                            return {
+                              ...prevItemsInCart,
+                              [product.sku]: {
+                                name: product.name,
+                                unitPrice: product.unitPrice,
+                                quantity: 1,
+                              },
+                            };
                           }
-                          console.log("newQty: " + newQuantity);
-
-                          let newCartItems = {
-                            ...prevItemsInCart,
-                            [product.sku]: {
-                              name: product.name,
-                              quantity: newQuantity,
-                              unitPrice: product.unitPrice,
-                            },
-                          };
-                          console.log("newCartItems: ");
-                          console.log(newCartItems);
-
-                          return newCartItems;
-
-                          // return {
-                          //   cartItems: "hello",
-                          //   newCartItems: "hello",
-                          //   boo: "boo",
-                          //   [product.sku]: {
-                          //     name: product.name,
-                          //     unitPrice: product.unitPrice,
-                          //     quantity: newQuantity,
-                          //   },
-                          //   ...prevItemsInCart,
-                          // };
                         })
                       }
                     >
