@@ -8,7 +8,6 @@ const round = (value) => {
 
 function Cart() {
   const { itemsInCart, setItemsInCart } = useCart();
-  const [checkoutState, setCheckoutState] = useState({ total: 0, discount: 0 });
 
   // calculating total price and discount if applicable
   let totalPrice = 0;
@@ -206,7 +205,7 @@ function Cart() {
           <h1 className="py-6 border-b-2 text-xl text-gray-600 px-8">
             Order Summary
           </h1>
-          <ul className="py-6 border-b space-y-6 px-8">
+          <ul className="py-2 border-b space-y-1 px-4">
             {Object.keys(itemsInCart).map((key) => (
               <CartItem item={itemsInCart[key]} key={itemsInCart[key].name} />
             ))}

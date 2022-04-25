@@ -18,8 +18,8 @@ import { CartProvider } from "./contexts/CartContext";
 function App() {
   return (
     <div>
-      <CartProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <CartProvider>
           <Navbar />
           <Routes>
             <Route index element={<Homepage />}></Route>
@@ -44,8 +44,8 @@ function App() {
             <Route path="/accessories/add" element={<AddAccessory />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
           </Routes>
-        </BrowserRouter>
-      </CartProvider>
+        </CartProvider>
+      </BrowserRouter>
     </div>
   );
 }

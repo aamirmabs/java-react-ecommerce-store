@@ -22,8 +22,36 @@ export const initialCartContextValue = {
 export function CartProvider({ children }) {
   const [itemsInCart, setItemsInCart] = useState(initialCartContextValue);
 
+  function addItemToCart(product) {
+    setItemsInCart((prevItemsInCart) => {
+      // checking if the item is already in the cart and has quantity
+      let newQuantity = 0;
+      if (prevItemsInCart[product.sku]) {
+        newQuantity = prevItemsInCart[product.sku].quantity + 1;
+        return {
+          ...prevItemsInCart,
+          [product.sku]: {
+            ...prevItemsInCart[product.sku],
+            quantity: newQuantity,
+          },
+        };
+      } else {
+        return {
+          ...prevItemsInCart,
+          [product.sku]: {
+            name: product.name,
+            unitPrice: product.unitPrice,
+            quantity: 1,
+          },
+        };
+      }
+    });
+  }
+
   return (
-    <CartContext.Provider value={{ itemsInCart, setItemsInCart }}>
+    <CartContext.Provider
+      value={{ itemsInCart, setItemsInCart, addItemToCart }}
+    >
       {children}
     </CartContext.Provider>
   );

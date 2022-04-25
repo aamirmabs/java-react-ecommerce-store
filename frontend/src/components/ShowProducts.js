@@ -19,7 +19,7 @@ import { useCart } from "./../contexts/CartContext";
 function ShowProducts() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState(null);
-  const { itemsInCart, setItemsInCart } = useCart();
+  const { itemsInCart, setItemsInCart, addItemToCart } = useCart();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,38 +74,18 @@ function ShowProducts() {
                     <span className="text-gray-500 mt-2">
                       ${product.unitPrice}
                     </span>
-
-                    <button
-                      className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-1 w-full"
-                      onClick={() =>
-                        setItemsInCart((prevItemsInCart) => {
-                          // checking if the item is already in the cart and has quantity
-                          let newQuantity = 0;
-                          if (prevItemsInCart[product.sku]) {
-                            newQuantity =
-                              prevItemsInCart[product.sku].quantity + 1;
-                            return {
-                              ...prevItemsInCart,
-                              [product.sku]: {
-                                ...prevItemsInCart[product.sku],
-                                quantity: newQuantity,
-                              },
-                            };
-                          } else {
-                            return {
-                              ...prevItemsInCart,
-                              [product.sku]: {
-                                name: product.name,
-                                unitPrice: product.unitPrice,
-                                quantity: 1,
-                              },
-                            };
-                          }
-                        })
-                      }
-                    >
-                      Add to Cart
-                    </button>
+                    {itemsInCart[product.sku] ? (
+                      <button className="rounded text-white  bg-green-600 px-4 py-2 m-1 w-full opacity-50 cursor-not-allowed">
+                        Item already in cart
+                      </button>
+                    ) : (
+                      <button
+                        className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-1 w-full"
+                        onClick={() => addItemToCart(product)}
+                      >
+                        Add to Cart
+                      </button>
+                    )}
                   </div>
                 </div>
               );
