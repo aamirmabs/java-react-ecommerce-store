@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar.js";
 import AddIndoorPlant from "./components/AddIndoorPlant";
@@ -18,8 +18,8 @@ import { CartProvider } from "./contexts/CartContext";
 function App() {
   return (
     <div>
-      <BrowserRouter>
-        <CartProvider>
+      <CartProvider>
+        <BrowserRouter>
           <Navbar />
           <Routes>
             <Route index element={<Homepage />}></Route>
@@ -44,8 +44,8 @@ function App() {
             <Route path="/accessories/add" element={<AddAccessory />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
           </Routes>
-        </CartProvider>
-      </BrowserRouter>
+        </BrowserRouter>
+      </CartProvider>
     </div>
   );
 }
