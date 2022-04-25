@@ -1,8 +1,34 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import { useCart } from "./../contexts/CartContext";
+import CartItem from "./CartItem";
+
+const round = (value) => {
+  return parseFloat(value).toFixed(2);
+};
 
 function Cart() {
-  const { cartItems, cartContextFunction } = useCart();
+  const { itemsInCart, setItemsInCart } = useCart();
+  const [checkoutState, setCheckoutState] = useState({ total: 0, discount: 0 });
+
+  // calculating total price and discount if applicable
+  let totalPrice = 0;
+  let discount = 0;
+
+  const keys = Object.keys(itemsInCart);
+  keys.forEach((key) => {
+    console.log(itemsInCart[key].name);
+    totalPrice += itemsInCart[key].quantity * itemsInCart[key].unitPrice;
+  });
+
+  totalPrice = round(totalPrice);
+
+  if (totalPrice > 49.99) {
+    discount = round(totalPrice * 0.2);
+  } else {
+    discount = 0;
+  }
+
+  console.log(totalPrice);
 
   return (
     <div>
@@ -55,7 +81,7 @@ function Cart() {
             </div>
           </div>
           <div className="rounded-md">
-            <form id="payment-form" method="POST" action>
+            <form id="payment-form" method="POST">
               <section>
                 <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
                   Shipping &amp; Billing Information
@@ -146,9 +172,7 @@ function Cart() {
                         <option value="ES">Spain</option>
                         <option value="TN">Tunisia</option>
                         <option value="GB">United Kingdom</option>
-                        <option value="US" selected="selected">
-                          United States
-                        </option>
+                        <option value="US">United States</option>
                       </select>
                     </div>
                   </label>
@@ -175,7 +199,7 @@ function Cart() {
             </section>
           </div>
           <button className="submit-button px-4 py-3 rounded-full bg-pink-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
-            Pay €846.98
+            Pay £846.98
           </button>
         </div>
         <div className="col-span-1 bg-white lg:block hidden">
@@ -183,70 +207,30 @@ function Cart() {
             Order Summary
           </h1>
           <ul className="py-6 border-b space-y-6 px-8">
-            <li className="grid grid-cols-6 gap-2 border-b-1">
-              <div className="col-span-1 self-center">
-                <img
-                  src="https://bit.ly/3oW8yej"
-                  alt="Product"
-                  className="rounded w-full"
-                />
-              </div>
-              <div className="flex flex-col col-span-3 pt-2">
-                <span className="text-gray-600 text-md font-semi-bold">
-                  Studio 2 Headphone
-                </span>
-                <span className="text-gray-400 text-sm inline-block pt-2">
-                  Red Headphone
-                </span>
-              </div>
-              <div className="col-span-2 pt-3">
-                <div className="flex items-center space-x-2 text-sm justify-between">
-                  <span className="text-gray-400">2 x €30.99</span>
-                  <span className="text-pink-400 font-semibold inline-block">
-                    €61.98
-                  </span>
-                </div>
-              </div>
-            </li>
-            <li className="grid grid-cols-6 gap-2 border-b-1">
-              <div className="col-span-1 self-center">
-                <img
-                  src="https://bit.ly/3lCyoSx"
-                  alt="Product"
-                  className="rounded w-full"
-                />
-              </div>
-              <div className="flex flex-col col-span-3 pt-2">
-                <span className="text-gray-600 text-md font-semi-bold">
-                  Apple iPhone 13
-                </span>
-                <span className="text-gray-400 text-sm inline-block pt-2">
-                  Phone
-                </span>
-              </div>
-              <div className="col-span-2 pt-3">
-                <div className="flex items-center space-x-2 text-sm justify-between">
-                  <span className="text-gray-400">1 x €785</span>
-                  <span className="text-pink-400 font-semibold inline-block">
-                    €785
-                  </span>
-                </div>
-              </div>
-            </li>
+            {Object.keys(itemsInCart).map((key) => (
+              <CartItem item={itemsInCart[key]} key={itemsInCart[key].name} />
+            ))}
           </ul>
           <div className="px-8 border-b">
             <div className="flex justify-between py-4 text-gray-600">
               <span>Subtotal</span>
-              <span className="font-semibold text-pink-500">€846.98</span>
+              <span className="font-semibold text-pink-500">£{totalPrice}</span>
             </div>
-            <div className="flex justify-between py-4 text-gray-600">
-              <span>Shipping</span>
-              <span className="font-semibold text-pink-500">Free</span>
-            </div>
+            {discount ? (
+              <div className="flex justify-between py-4 text-gray-600">
+                <span>Discount</span>
+                <span className="font-semibold text-pink-500">£{discount}</span>
+              </div>
+            ) : (
+              <div className="flex justify-between py-4 text-gray-600">
+                <span>Discount</span>
+                <span className="font-semibold text-pink-500">N/A</span>
+              </div>
+            )}
           </div>
           <div className="font-semibold text-xl px-8 flex justify-between py-8 text-gray-600">
             <span>Total</span>
-            <span>€846.98</span>
+            <span>£{round(totalPrice - discount)}</span>
           </div>
         </div>
       </div>

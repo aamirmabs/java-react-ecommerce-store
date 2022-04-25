@@ -8,9 +8,14 @@ export function cartContextFunction() {
 
 export const initialCartContextValue = {
   "INDOOR-PLANT-1002": {
-    name: "Mistletoe Cactus (Rhipsalis Cashero) - 15-25cm Height",
+    name: "Mistletoe Cactus (Rhipsalis Cashero)",
     quantity: 1,
     unitPrice: 24.99,
+  },
+  "OUTDOOR-PLANT-1002": {
+    name: "KING SIZE MONSTERA DELICIOSA",
+    quantity: 2,
+    unitPrice: 13.99,
   },
 };
 
