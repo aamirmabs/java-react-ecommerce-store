@@ -48,9 +48,60 @@ export function CartProvider({ children }) {
     });
   }
 
+  function incrementItemCount(productSKU) {
+    setItemsInCart((prevItemsInCart) => {
+      console.log("SKU: ", productSKU);
+
+      // increment quantity of the item, if 0 then delete it from the cart
+      const product = prevItemsInCart[productSKU];
+      console.log("product: ");
+      console.log(product);
+
+      let newQuantity = product.quantity + 1;
+
+      return {
+        ...prevItemsInCart,
+        [productSKU]: {
+          ...prevItemsInCart[productSKU],
+          quantity: newQuantity,
+        },
+      };
+    });
+  }
+
+  function decrementItemCount(productSKU) {
+    setItemsInCart((prevItemsInCart) => {
+      // decrement quantity of the item, if 0 then delete it from the cart
+      const product = prevItemsInCart[productSKU];
+
+      let newQuantity = product.quantity - 1;
+      return {
+        ...prevItemsInCart,
+        [productSKU]: {
+          ...prevItemsInCart[productSKU],
+          quantity: newQuantity,
+        },
+      };
+    });
+  }
+
+  function removeItemFromCart(productSKU) {
+    setItemsInCart((prevItemsInCart) => {
+      delete prevItemsInCart[productSKU];
+      return { ...prevItemsInCart };
+    });
+  }
+
   return (
     <CartContext.Provider
-      value={{ itemsInCart, setItemsInCart, addItemToCart }}
+      value={{
+        itemsInCart,
+        setItemsInCart,
+        addItemToCart,
+        removeItemFromCart,
+        incrementItemCount,
+        decrementItemCount,
+      }}
     >
       {children}
     </CartContext.Provider>

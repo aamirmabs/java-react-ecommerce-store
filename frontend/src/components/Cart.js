@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { useCart } from "./../contexts/CartContext";
 import CartItem from "./CartItem";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
-const round = (value) => {
+const roundDecimalTo2 = (value) => {
   return parseFloat(value).toFixed(2);
 };
 
 function Cart() {
   const { itemsInCart, setItemsInCart } = useCart();
+
+  const infoCircleIcon = <FontAwesomeIcon icon={faInfoCircle} />;
+  const crossIcon = <FontAwesomeIcon icon={faXmarkCircle} />;
 
   // calculating total price and discount if applicable
   let totalPrice = 0;
@@ -15,19 +20,16 @@ function Cart() {
 
   const keys = Object.keys(itemsInCart);
   keys.forEach((key) => {
-    console.log(itemsInCart[key].name);
     totalPrice += itemsInCart[key].quantity * itemsInCart[key].unitPrice;
   });
 
-  totalPrice = round(totalPrice);
+  totalPrice = roundDecimalTo2(totalPrice);
 
   if (totalPrice > 49.99) {
-    discount = round(totalPrice * 0.2);
+    discount = roundDecimalTo2(totalPrice * 0.2);
   } else {
     discount = 0;
   }
-
-  console.log(totalPrice);
 
   return (
     <div>
@@ -41,42 +43,14 @@ function Cart() {
         <div className="lg:col-span-2 col-span-3 bg-green-50 space-y-8 px-12">
           <div className="mt-8 p-4 relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md">
             <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
-              <div className="text-yellow-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 sm:w-5 h-6 sm:h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
+              <div className="text-yellow-500">{infoCircleIcon}</div>
               <div className="text-sm font-medium ml-3">Checkout</div>
             </div>
             <div className="text-sm tracking-wide text-gray-500 mt-4 sm:mt-0 sm:ml-4">
               Complete your shipping and payment details below.
             </div>
             <div className="absolute sm:relative sm:top-auto sm:right-auto ml-auto right-4 top-4 text-gray-400 hover:text-gray-800 cursor-pointer">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              {crossIcon}
             </div>
           </div>
           <div className="rounded-md">
@@ -207,7 +181,11 @@ function Cart() {
           </h1>
           <ul className="py-2 border-b space-y-1 px-4">
             {Object.keys(itemsInCart).map((key) => (
-              <CartItem item={itemsInCart[key]} key={itemsInCart[key].name} />
+              <CartItem
+                item={itemsInCart[key]}
+                sku={key}
+                key={itemsInCart[key].name}
+              />
             ))}
           </ul>
           <div className="px-8 border-b">
@@ -229,7 +207,7 @@ function Cart() {
           </div>
           <div className="font-semibold text-xl px-8 flex justify-between py-8 text-gray-600">
             <span>Total</span>
-            <span>£{round(totalPrice - discount)}</span>
+            <span>£{roundDecimalTo2(totalPrice - discount)}</span>
           </div>
         </div>
       </div>
