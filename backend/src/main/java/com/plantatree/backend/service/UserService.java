@@ -5,6 +5,7 @@ import com.plantatree.backend.dao.UserDao;
 import com.plantatree.backend.entity.Role;
 import com.plantatree.backend.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -18,6 +19,9 @@ public class UserService {
 
   @Autowired
   private RoleDao roleDao;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   public User registerNewUser(User user) {
     return userDao.save(user);
@@ -39,7 +43,7 @@ public class UserService {
     adminUser.setUserFirstName("admin");
     adminUser.setUserLastName("admin");
     adminUser.setUserName("admin123");
-    adminUser.setUserPassword("admin123");
+    adminUser.setUserPassword(getEncodedPassword("admin123"));
     Set<Role> adminRoles = new HashSet<>();
     adminRoles.add(adminRole);
     adminUser.setRole(adminRoles);
@@ -50,7 +54,7 @@ public class UserService {
     user1.setUserFirstName("user1");
     user1.setUserLastName("user1");
     user1.setUserName("user1");
-    user1.setUserPassword("user123");
+    user1.setUserPassword(getEncodedPassword("user123"));
     Set<Role> userRoles = new HashSet<>();
     userRoles.add(userRole);
     user1.setRole(userRoles);
@@ -61,7 +65,7 @@ public class UserService {
     user2.setUserFirstName("user2");
     user2.setUserLastName("user2");
     user2.setUserName("user2");
-    user2.setUserPassword("user123");
+    user2.setUserPassword(getEncodedPassword("user123"));
     // userRoles = new HashSet<>();
     userRoles.add(userRole);
     user2.setRole(userRoles);
@@ -71,12 +75,16 @@ public class UserService {
     user3.setUserFirstName("user3");
     user3.setUserLastName("user3");
     user3.setUserName("user3");
-    user3.setUserPassword("user123");
+    user3.setUserPassword(getEncodedPassword("user123"));
     // userRoles = new HashSet<>();
     userRoles.add(userRole);
     user3.setRole(userRoles);
     userDao.save(user3);
 
+  }
+
+  public String getEncodedPassword(String password) {
+    return passwordEncoder.encode(password);
   }
 
 }
