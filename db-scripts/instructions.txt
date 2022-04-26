@@ -1,0 +1,13 @@
+Repo link: https://github.com/aamirmabs/java-react-ecommerce-store
+
+Start the front end:
+cd frontend
+npm install
+npm start
+server starts at: http://localhost:3000/
+
+Backend:
+- first install mysql and mysql workbench
+- run 01-create-db.sql
+- run 02-product-and-category.sql
+- backend apis will be accessible on port 8080. eg: http://localhost:8080/api/products

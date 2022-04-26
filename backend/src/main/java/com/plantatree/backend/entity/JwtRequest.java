@@ -3,7 +3,7 @@ package com.plantatree.backend.entity;
 public class JwtRequest {
 
   private String userName;
-  private String userPassowrd;
+  private String userPassword;
 
   public String getUserName() {
     return userName;
@@ -13,11 +13,11 @@ public class JwtRequest {
     this.userName = userName;
   }
 
-  public String getUserPassowrd() {
-    return userPassowrd;
+  public String getUserPassword() {
+    return userPassword;
   }
 
-  public void setUserPassowrd(String userPassowrd) {
-    this.userPassowrd = userPassowrd;
+  public void setUserPassword(String userPassword) {
+    this.userPassword = userPassword;
   }
 }
