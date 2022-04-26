@@ -11,29 +11,46 @@ import AddAccessory from "./components/AddAccessory";
 import ShowAccessories from "./components/ShowAccessories";
 import ShowProducts from "./components/ShowProducts";
 import Homepage from "./components/Homepage";
+import Cart from "./components/Cart";
+import PaymentSuccess from "./components/PaymentSuccess";
+
+import { CartProvider } from "./contexts/CartContext";
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route index element={<Homepage />}></Route>
-          <Route path="/" element={<Homepage />}></Route>
-          <Route path="/products" element={<ShowProducts />}></Route>
-          <Route path="/indoor-plants" element={<ShowIndoorPlant />}></Route>
-          <Route path="/indoor-plants/add" element={<AddIndoorPlant />}></Route>
-          <Route path="/outdoor-plants" element={<ShowOutdoorPlant />}></Route>
-          <Route
-            path="/outdoor-plants/add"
-            element={<AddOutdoorPlant />}
-          ></Route>
-          <Route path="/tools" element={<ShowTool />}></Route>
-          <Route path="/tools/add" element={<AddTool />}></Route>
-          <Route path="/accessories" element={<ShowAccessories />}></Route>
-          <Route path="/accessories/add" element={<AddAccessory />}></Route>
-        </Routes>
-      </BrowserRouter>
+      <CartProvider>
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route index element={<Homepage />}></Route>
+            <Route path="/" element={<Homepage />}></Route>
+            <Route path="/products" element={<ShowProducts />}></Route>
+            <Route path="/indoor-plants" element={<ShowIndoorPlant />}></Route>
+            <Route
+              path="/indoor-plants/add"
+              element={<AddIndoorPlant />}
+            ></Route>
+            <Route
+              path="/outdoor-plants"
+              element={<ShowOutdoorPlant />}
+            ></Route>
+            <Route
+              path="/outdoor-plants/add"
+              element={<AddOutdoorPlant />}
+            ></Route>
+            <Route path="/tools" element={<ShowTool />}></Route>
+            <Route path="/tools/add" element={<AddTool />}></Route>
+            <Route path="/accessories" element={<ShowAccessories />}></Route>
+            <Route path="/accessories/add" element={<AddAccessory />}></Route>
+            <Route path="/cart" element={<Cart />}></Route>
+            <Route
+              path="/order-confirmation"
+              element={<PaymentSuccess />}
+            ></Route>
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   // abstracting the css classes
@@ -29,30 +30,30 @@ function Navbar() {
                 </a>
               </div>
               <nav className="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row">
-                <a className={navbarItemCSS} href="/products">
+                <Link className={navbarItemCSS} to="/products">
                   All Products
-                </a>
-                <a className={navbarItemCSS} href="/indoor-plants">
+                </Link>
+                <Link className={navbarItemCSS} to="/indoor-plants">
                   Indoor Plants
-                </a>
-                <a className={navbarItemCSS} href="/outdoor-plants">
+                </Link>
+                <Link className={navbarItemCSS} to="/outdoor-plants">
                   Outdoor Plants
-                </a>
-                <a className={navbarItemCSS} href="/tools">
+                </Link>
+                <Link className={navbarItemCSS} to="/tools">
                   Tools
-                </a>
-                <a className={navbarItemCSS} href="/accessories">
+                </Link>
+                <Link className={navbarItemCSS} to="/accessories">
                   Accessories
-                </a>
-                <a className={navbarGreenBtn} href="/cart">
+                </Link>
+                <Link className={navbarGreenBtn} to="/cart">
                   Cart
-                </a>
-                <a className={navbarGreenBtn} href="/login">
+                </Link>
+                <Link className={navbarGreenBtn} to="/login">
                   Login
-                </a>
-                <a className={navbarRedBtn} href="/logout">
+                </Link>
+                <Link className={navbarRedBtn} to="/logout">
                   Log Out
-                </a>
+                </Link>
               </nav>
             </div>
           </div>
