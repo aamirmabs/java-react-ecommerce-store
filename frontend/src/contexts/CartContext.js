@@ -92,12 +92,23 @@ export function CartProvider({ children }) {
     });
   }
 
+  function processPayment() {
+    // TODO: logic to add the cart items to the order table
+
+    // clearing the cart object
+    setItemsInCart({});
+
+    // redirect to the order confirmation page
+    // performed on the cart component page
+  }
+
   return (
     <CartContext.Provider
       value={{
         itemsInCart,
-        setItemsInCart,
         addItemToCart,
+        processPayment,
+        setItemsInCart,
         removeItemFromCart,
         incrementItemCount,
         decrementItemCount,

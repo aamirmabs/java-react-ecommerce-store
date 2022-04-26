@@ -1,15 +1,19 @@
 import React from "react";
-import { useCart } from "./../contexts/CartContext";
-import CartItem from "./CartItem";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+
+import { useCart } from "./../contexts/CartContext";
+import CartItem from "./CartItem";
 
 const roundDecimalTo2 = (value) => {
   return parseFloat(value).toFixed(2);
 };
 
 function Cart() {
-  const { itemsInCart, setItemsInCart } = useCart();
+  const { itemsInCart, setItemsInCart, processPayment } = useCart();
+
+  const navigate = useNavigate();
 
   const infoCircleIcon = <FontAwesomeIcon icon={faInfoCircle} />;
   const crossIcon = <FontAwesomeIcon icon={faXmarkCircle} />;
@@ -30,6 +34,65 @@ function Cart() {
   } else {
     discount = 0;
   }
+
+  // checking if cart is empty to display empty cart message
+  const isCartEmpty =
+    itemsInCart &&
+    Object.keys(itemsInCart).length === 0 &&
+    Object.getPrototypeOf(itemsInCart) === Object.prototype;
+
+  // saving jsx in constants
+  const emptyCartMessageJSX = (
+    <div className="text-center px-10">
+      <p className="text-green-600 text-2xl font-bold">
+        Your cart is empty! Add products to view them in the cart...
+      </p>
+
+      <Link to="/products">
+        <button className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-4 align-middle">
+          View Products Page
+        </button>
+      </Link>
+    </div>
+  );
+
+  const cartItemsListJSX = (
+    <div>
+      <h1 className="py-6 border-b-2 text-xl text-gray-600 px-8">
+        Order Summary
+      </h1>
+      <ul className="py-2 border-b space-y-1 px-4">
+        {Object.keys(itemsInCart).map((key) => (
+          <CartItem
+            item={itemsInCart[key]}
+            sku={key}
+            key={itemsInCart[key].name}
+          />
+        ))}
+      </ul>
+      <div className="px-8 border-b">
+        <div className="flex justify-between py-4 text-gray-600">
+          <span>Subtotal</span>
+          <span className="font-semibold text-pink-500">£{totalPrice}</span>
+        </div>
+        {discount ? (
+          <div className="flex justify-between py-4 text-gray-600">
+            <span>Discount</span>
+            <span className="font-semibold text-pink-500">£{discount}</span>
+          </div>
+        ) : (
+          <div className="flex justify-between py-4 text-gray-600">
+            <span>Discount</span>
+            <span className="font-semibold text-pink-500">N/A</span>
+          </div>
+        )}
+      </div>
+      <div className="font-semibold text-xl px-8 flex justify-between py-8 text-gray-600">
+        <span>Total</span>
+        <span>£{roundDecimalTo2(totalPrice - discount)}</span>
+      </div>
+    </div>
+  );
 
   return (
     <div>
@@ -171,44 +234,18 @@ function Cart() {
               </fieldset>
             </section>
           </div>
-          <button className="submit-button px-4 py-3 rounded-full bg-pink-400 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
-            Pay £846.98
+          <button
+            className="submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors"
+            onClick={() => {
+              processPayment();
+              navigate("/order-confirmation");
+            }}
+          >
+            Pay £{roundDecimalTo2(totalPrice - discount)}
           </button>
         </div>
         <div className="col-span-1 bg-white lg:block hidden">
-          <h1 className="py-6 border-b-2 text-xl text-gray-600 px-8">
-            Order Summary
-          </h1>
-          <ul className="py-2 border-b space-y-1 px-4">
-            {Object.keys(itemsInCart).map((key) => (
-              <CartItem
-                item={itemsInCart[key]}
-                sku={key}
-                key={itemsInCart[key].name}
-              />
-            ))}
-          </ul>
-          <div className="px-8 border-b">
-            <div className="flex justify-between py-4 text-gray-600">
-              <span>Subtotal</span>
-              <span className="font-semibold text-pink-500">£{totalPrice}</span>
-            </div>
-            {discount ? (
-              <div className="flex justify-between py-4 text-gray-600">
-                <span>Discount</span>
-                <span className="font-semibold text-pink-500">£{discount}</span>
-              </div>
-            ) : (
-              <div className="flex justify-between py-4 text-gray-600">
-                <span>Discount</span>
-                <span className="font-semibold text-pink-500">N/A</span>
-              </div>
-            )}
-          </div>
-          <div className="font-semibold text-xl px-8 flex justify-between py-8 text-gray-600">
-            <span>Total</span>
-            <span>£{roundDecimalTo2(totalPrice - discount)}</span>
-          </div>
+          {isCartEmpty ? emptyCartMessageJSX : cartItemsListJSX}
         </div>
       </div>
     </div>

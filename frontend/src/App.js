@@ -12,6 +12,7 @@ import ShowAccessories from "./components/ShowAccessories";
 import ShowProducts from "./components/ShowProducts";
 import Homepage from "./components/Homepage";
 import Cart from "./components/Cart";
+import PaymentSuccess from "./components/PaymentSuccess";
 
 import { CartProvider } from "./contexts/CartContext";
 
@@ -43,6 +44,10 @@ function App() {
             <Route path="/accessories" element={<ShowAccessories />}></Route>
             <Route path="/accessories/add" element={<AddAccessory />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
+            <Route
+              path="/order-confirmation"
+              element={<PaymentSuccess />}
+            ></Route>
           </Routes>
         </BrowserRouter>
       </CartProvider>
