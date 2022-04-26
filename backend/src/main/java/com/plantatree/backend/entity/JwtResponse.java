@@ -1,5 +1,6 @@
 package com.plantatree.backend.entity;
 
+
 public class JwtResponse {
 
   private User user;

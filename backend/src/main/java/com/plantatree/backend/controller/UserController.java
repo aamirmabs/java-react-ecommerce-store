@@ -3,12 +3,14 @@ package com.plantatree.backend.controller;
 import com.plantatree.backend.entity.User;
 import com.plantatree.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+
 
 @RestController
 public class UserController {
@@ -17,23 +19,24 @@ public class UserController {
   private UserService userService;
 
   @PostConstruct
-  public void initRolesAndUsers() {
-    userService.initRolesAndUsers();
+  public void initRoleAndUser() {
+    userService.initRoleAndUser();
   }
 
-  @PostMapping({"/api/registerNewUser"})
+  @PostMapping({"/registerNewUser"})
   public User registerNewUser(@RequestBody User user) {
     return userService.registerNewUser(user);
   }
 
-  @GetMapping({"/api/forAdmin"})
+  @GetMapping({"/forAdmin"})
+  @PreAuthorize("hasRole('Admin')")
   public String forAdmin() {
-    return "This URL is for admin only";
+    return "This URL is only accessible to the admin";
   }
 
-  @GetMapping({"/api/forUser"})
+  @GetMapping({"/forUser"})
+  @PreAuthorize("hasRole('User')")
   public String forUser() {
-    return "This URL is for user only";
+    return "This URL is only accessible to the user";
   }
-
 }
