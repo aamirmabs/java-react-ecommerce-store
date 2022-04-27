@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
   // abstracting the css classes
@@ -11,6 +13,8 @@ function Navbar() {
 
   const navbarRedBtn =
     "px-4 py-2 mt-2 text-sm font-semibold bg-red-700 rounded-lg md:mt-0 md:ml-4 text-white hover:text-gray-100 focus:text-gray-100 hover:bg-red-600 focus:bg-red-600 focus:outline-none focus:shadow-outline";
+
+  const searchIcon = <FontAwesomeIcon icon={faSearch} />;
 
   return (
     <div className="bg-gray-800">
@@ -44,6 +48,9 @@ function Navbar() {
                 </Link>
                 <Link className={navbarItemCSS} to="/accessories">
                   Accessories
+                </Link>
+                <Link className={navbarItemCSS} to="/search">
+                  {searchIcon}
                 </Link>
                 <Link className={navbarGreenBtn} to="/cart">
                   Cart
