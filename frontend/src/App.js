@@ -15,6 +15,7 @@ import Cart from "./components/Cart";
 import PaymentSuccess from "./components/PaymentSuccess";
 
 import { CartProvider } from "./contexts/CartContext";
+import SearchPage from "./components/SearchPage";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             <Route path="/accessories" element={<ShowAccessories />}></Route>
             <Route path="/accessories/add" element={<AddAccessory />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
+            <Route path="/search" element={<SearchPage />}></Route>
             <Route
               path="/order-confirmation"
               element={<PaymentSuccess />}
