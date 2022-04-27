@@ -49,7 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/product-category/1/products",
             "/api/product-category/2/products",
             "/api/product-category/3/products",
-            "/api/product-category/4/products"
+            "/api/product-category/4/products",
+            "/api/products/search/findByCategoryId",
+            "/api/products/search/findByNameContaining",
+            "*"
         )
         .permitAll()
         .antMatchers(HttpHeaders.ALLOW).permitAll()
