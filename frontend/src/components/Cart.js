@@ -75,21 +75,10 @@ function Cart() {
           <span>Subtotal</span>
           <span className="font-semibold text-pink-500">£{totalPrice}</span>
         </div>
-        {/* {discount ? (
-          <div className="flex justify-between py-4 text-gray-600">
-            <span>Discount</span>
-            <span className="font-semibold text-pink-500">£{discount}</span>
-          </div>
-        ) : (
-          <div className="flex justify-between py-4 text-gray-600">
-            <span>Discount</span>
-            <span className="font-semibold text-pink-500">N/A</span>
-          </div>
-        )} */}
         <div className="flex justify-between py-4 text-gray-600">
-          <span>Discount</span>
+          <span>Discount (20%)</span>
           <span className="font-semibold text-pink-500">
-            {discount ? "£" + { discount } : "N/A"}
+            {discount ? "£" + discount : "N/A"}
           </span>
         </div>
       </div>
