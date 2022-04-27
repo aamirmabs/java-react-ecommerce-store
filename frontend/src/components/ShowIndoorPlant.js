@@ -34,7 +34,7 @@ function ShowIndoorPlant() {
 
   return (
     <div>
-      <div className="flex flex-col  items-center justify-center w-full">
+      <div className="flex flex-col items-center justify-center w-full">
         <h1 className="font-medium leading-tight text-5xl m-1 text-green-800">
           Indoor Plants
         </h1>
