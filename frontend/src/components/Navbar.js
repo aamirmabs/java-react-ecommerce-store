@@ -5,7 +5,11 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "./../contexts/AuthContext";
 
 function Navbar() {
-  const { authState } = useAuth();
+  const { authState, setAuthState, initialAuthContextValue } = useAuth();
+
+  const logoutUser = () => {
+    setAuthState(initialAuthContextValue);
+  };
 
   const userAccountInfo = (
     <div className="flex -space-x-2 overflow-hidden">
@@ -74,9 +78,9 @@ function Navbar() {
                   Cart
                 </Link>
                 {authState.isAuthenticated ? (
-                  <Link className={navbarRedBtn} to="/logout">
+                  <button className={navbarRedBtn} onClick={() => logoutUser()}>
                     Log Out
-                  </Link>
+                  </button>
                 ) : (
                   <Link className={navbarGreenBtn} to="/login">
                     Login

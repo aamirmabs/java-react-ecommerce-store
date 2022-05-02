@@ -38,6 +38,7 @@ export function AuthProvider({ children }) {
       value={{
         authState,
         setAuthState,
+        initialAuthContextValue
       }}
     >
       {children}
