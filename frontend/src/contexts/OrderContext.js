@@ -7,18 +7,18 @@ export const initialOrderContextValue = {
     subTotal: 52.97,
     discount: 10.59,
     total: 42.38,
-    items: {
-      "INDOOR-PLANT-1002": {
+    items: [
+      {
         name: "Mistletoe Cactus (Rhipsalis Cashero)",
         quantity: 1,
         unitPrice: 24.99,
       },
-      "OUTDOOR-PLANT-1002": {
+      {
         name: "KING SIZE MONSTERA DELICIOSA",
         quantity: 3,
         unitPrice: 13.99,
       },
-    },
+    ],
   },
   "2832b2ad-95ff-4574-b89c-dccb9cfe034b": {
     subTotal: 52.97,
