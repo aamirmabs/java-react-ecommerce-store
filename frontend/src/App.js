@@ -14,6 +14,7 @@ import Homepage from "./components/Homepage";
 import Cart from "./components/Cart";
 import PaymentSuccess from "./components/PaymentSuccess";
 import Login from "./components/Login";
+import ProfilePage from "./components/ProfilePage";
 
 import { CartProvider } from "./contexts/CartContext";
 import SearchPage from "./components/SearchPage";
@@ -53,6 +54,7 @@ function App() {
               <Route path="/cart" element={<Cart />}></Route>
               <Route path="/login" element={<Login />}></Route>
               <Route path="/search" element={<SearchPage />}></Route>
+              <Route path="/profile" element={<ProfilePage />}></Route>
               <Route
                 path="/order-confirmation"
                 element={<PaymentSuccess />}
