@@ -8,6 +8,7 @@ import { useAuth } from "./../contexts/AuthContext";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(false);
 
   const { authState, setAuthState } = useAuth();
 
@@ -35,10 +36,16 @@ function Login() {
             isAuthenticated: true,
           };
         });
+        setLoginError(false);
+        return;
       })
-      .then(navigate("/"))
+      .then((data) => {
+        console.log("In redirect block");
+        navigate("/");
+      })
       .catch((error) => {
         console.log(error);
+        setLoginError(true);
       });
   };
 
@@ -48,6 +55,16 @@ function Login() {
       className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
       aria-hidden="true"
     />
+  );
+
+  const loginErrorMessage = (
+    <div
+      className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+      role="alert"
+    >
+      <span className="font-medium">LOGIN ERROR:</span> The username or password
+      you entered is incorrect.
+    </div>
   );
 
   return (
@@ -109,6 +126,7 @@ function Login() {
             </button>
           </div>
         </form>
+        {loginError && loginErrorMessage}
       </div>
     </div>
   );
