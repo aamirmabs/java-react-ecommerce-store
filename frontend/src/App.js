@@ -17,44 +17,50 @@ import Login from "./components/Login";
 
 import { CartProvider } from "./contexts/CartContext";
 import SearchPage from "./components/SearchPage";
+import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
   return (
     <div>
-      <CartProvider>
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            <Route index element={<Homepage />}></Route>
-            <Route path="/" element={<Homepage />}></Route>
-            <Route path="/products" element={<ShowProducts />}></Route>
-            <Route path="/indoor-plants" element={<ShowIndoorPlant />}></Route>
-            <Route
-              path="/indoor-plants/add"
-              element={<AddIndoorPlant />}
-            ></Route>
-            <Route
-              path="/outdoor-plants"
-              element={<ShowOutdoorPlant />}
-            ></Route>
-            <Route
-              path="/outdoor-plants/add"
-              element={<AddOutdoorPlant />}
-            ></Route>
-            <Route path="/tools" element={<ShowTool />}></Route>
-            <Route path="/tools/add" element={<AddTool />}></Route>
-            <Route path="/accessories" element={<ShowAccessories />}></Route>
-            <Route path="/accessories/add" element={<AddAccessory />}></Route>
-            <Route path="/cart" element={<Cart />}></Route>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="/search" element={<SearchPage />}></Route>
-            <Route
-              path="/order-confirmation"
-              element={<PaymentSuccess />}
-            ></Route>
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <Navbar />
+            <Routes>
+              <Route index element={<Homepage />}></Route>
+              <Route path="/" element={<Homepage />}></Route>
+              <Route path="/products" element={<ShowProducts />}></Route>
+              <Route
+                path="/indoor-plants"
+                element={<ShowIndoorPlant />}
+              ></Route>
+              <Route
+                path="/indoor-plants/add"
+                element={<AddIndoorPlant />}
+              ></Route>
+              <Route
+                path="/outdoor-plants"
+                element={<ShowOutdoorPlant />}
+              ></Route>
+              <Route
+                path="/outdoor-plants/add"
+                element={<AddOutdoorPlant />}
+              ></Route>
+              <Route path="/tools" element={<ShowTool />}></Route>
+              <Route path="/tools/add" element={<AddTool />}></Route>
+              <Route path="/accessories" element={<ShowAccessories />}></Route>
+              <Route path="/accessories/add" element={<AddAccessory />}></Route>
+              <Route path="/cart" element={<Cart />}></Route>
+              <Route path="/login" element={<Login />}></Route>
+              <Route path="/search" element={<SearchPage />}></Route>
+              <Route
+                path="/order-confirmation"
+                element={<PaymentSuccess />}
+              ></Route>
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
+      </AuthProvider>
     </div>
   );
 }

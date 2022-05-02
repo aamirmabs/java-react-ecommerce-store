@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import Axios from "axios";
+import { useAuth } from "./../contexts/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { authState, setAuthState } = useAuth();
+
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -19,7 +25,18 @@ function Login() {
       .then((data) => {
         console.log(data);
         console.log("TOKEN: " + data.jwtToken);
+        setAuthState((prevAuthState) => {
+          return {
+            ...prevAuthState,
+            userName: data.user.userName,
+            firstName: data.user.userFirstName,
+            role: data.user.role[0].roleName,
+            jwtToken: data.jwtToken,
+            isAuthenticated: true,
+          };
+        });
       })
+      .then(navigate("/"))
       .catch((error) => {
         console.log(error);
       });

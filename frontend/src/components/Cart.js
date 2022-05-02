@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import Axios from "axios";
 
 import { useCart } from "./../contexts/CartContext";
 import CartItem from "./CartItem";
@@ -14,6 +15,73 @@ function Cart() {
   const { itemsInCart, setItemsInCart, processPayment } = useCart();
 
   const navigate = useNavigate();
+
+  const handleCheckout = (e) => {
+    e.preventDefault();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImV4cCI6MTY1MTQ1Nzc5MywiaWF0IjoxNjUxNDM5NzkzfQ.eRWMDdpM2qvjAl7uPwx5J4u-fg2tybWyw-K5kMFXFtpeZi4pro3I_YOhHgl40mDl7HjUQE8IE7bzVOxnQX_5SQ`,
+      },
+    };
+
+    const bodyParameters = {
+      customer: {
+        firstName: "John",
+        lastName: "Doe",
+        email: "test@test.com",
+      },
+      shippingAddress: {
+        street: "Ashby Street",
+        city: "Manchester",
+        state: "Lancashire",
+        country: "UK",
+        zipCode: "M143GH",
+      },
+      billingAddress: {
+        street: "Ashby Street",
+        city: "Manchester",
+        state: "Lancashire",
+        country: "UK",
+        zipCode: "M143GH",
+      },
+      order: {
+        totalPrice: 36.98,
+        totalQuantity: 2,
+      },
+      orderItems: [
+        {
+          imageUrl:
+            "assets/images/products/coffeemugs/coffeemug-luv2code-1000.png",
+          quantity: 1,
+          unitPrice: 18.99,
+          productId: 26,
+        },
+        {
+          imageUrl:
+            "assets/images/products/mousepads/mousepad-luv2code-1000.png",
+          quantity: 1,
+          unitPrice: 17.99,
+          productId: 51,
+        },
+      ],
+    };
+
+    Axios.post(
+      "http://localhost:8080/api/checkout/purchase",
+      bodyParameters,
+      config
+    )
+      .then((response) => {
+        console.log(response);
+        return response.data;
+      })
+      .then((data) => {
+        console.log(data);
+        console.log("ORDER: " + data.orderTrackingNumber);
+      });
+  };
 
   const infoCircleIcon = <FontAwesomeIcon icon={faInfoCircle} />;
   const crossIcon = <FontAwesomeIcon icon={faXmarkCircle} />;
@@ -98,7 +166,10 @@ function Cart() {
       </div>
 
       <div className="h-screen grid grid-cols-3">
-        <div className="lg:col-span-2 col-span-3 bg-green-50 space-y-8 px-12">
+        <form
+          className="lg:col-span-2 col-span-3 bg-green-50 space-y-8 px-12"
+          onSubmit={(e) => handleCheckout(e)}
+        >
           <div className="mt-8 p-4 relative flex flex-col sm:flex-row sm:items-center bg-white shadow rounded-md">
             <div className="flex flex-row items-center border-b sm:border-b-0 w-full sm:w-auto pb-4 sm:pb-0">
               <div className="text-yellow-500">{infoCircleIcon}</div>
@@ -112,7 +183,7 @@ function Cart() {
             </div>
           </div>
           <div className="rounded-md">
-            <form id="payment-form" method="POST">
+            <div id="payment-form" method="POST">
               <section>
                 <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
                   Shipping &amp; Billing Information
@@ -209,7 +280,7 @@ function Cart() {
                   </label>
                 </fieldset>
               </section>
-            </form>
+            </div>
           </div>
           <div className="rounded-md">
             <section>
@@ -231,14 +302,14 @@ function Cart() {
           </div>
           <button
             className="submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors"
-            onClick={() => {
-              processPayment();
-              navigate("/order-confirmation");
-            }}
+            // onClick={() => {
+            //   processPayment();
+            //   navigate("/order-confirmation");
+            // }}
           >
             Pay £{roundDecimalTo2(totalPrice - discount)}
           </button>
-        </div>
+        </form>
         <div className="col-span-1 bg-white lg:block hidden">
           {isCartEmpty ? emptyCartMessageJSX : cartItemsListJSX}
         </div>
