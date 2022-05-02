@@ -28,7 +28,6 @@ function Login() {
         console.log("TOKEN: " + data.jwtToken);
         setAuthState((prevAuthState) => {
           return {
-            ...prevAuthState,
             userName: data.user.userName,
             firstName: data.user.userFirstName,
             role: data.user.role[0].roleName,

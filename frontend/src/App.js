@@ -19,48 +19,57 @@ import ProfilePage from "./components/ProfilePage";
 import { CartProvider } from "./contexts/CartContext";
 import SearchPage from "./components/SearchPage";
 import { AuthProvider } from "./contexts/AuthContext";
+import { orderContext, OrderProvider } from "./contexts/OrderContext";
 
 function App() {
   return (
     <div>
       <AuthProvider>
         <CartProvider>
-          <BrowserRouter>
-            <Navbar />
-            <Routes>
-              <Route index element={<Homepage />}></Route>
-              <Route path="/" element={<Homepage />}></Route>
-              <Route path="/products" element={<ShowProducts />}></Route>
-              <Route
-                path="/indoor-plants"
-                element={<ShowIndoorPlant />}
-              ></Route>
-              <Route
-                path="/indoor-plants/add"
-                element={<AddIndoorPlant />}
-              ></Route>
-              <Route
-                path="/outdoor-plants"
-                element={<ShowOutdoorPlant />}
-              ></Route>
-              <Route
-                path="/outdoor-plants/add"
-                element={<AddOutdoorPlant />}
-              ></Route>
-              <Route path="/tools" element={<ShowTool />}></Route>
-              <Route path="/tools/add" element={<AddTool />}></Route>
-              <Route path="/accessories" element={<ShowAccessories />}></Route>
-              <Route path="/accessories/add" element={<AddAccessory />}></Route>
-              <Route path="/cart" element={<Cart />}></Route>
-              <Route path="/login" element={<Login />}></Route>
-              <Route path="/search" element={<SearchPage />}></Route>
-              <Route path="/profile" element={<ProfilePage />}></Route>
-              <Route
-                path="/order-confirmation"
-                element={<PaymentSuccess />}
-              ></Route>
-            </Routes>
-          </BrowserRouter>
+          <OrderProvider>
+            <BrowserRouter>
+              <Navbar />
+              <Routes>
+                <Route index element={<Homepage />}></Route>
+                <Route path="/" element={<Homepage />}></Route>
+                <Route path="/products" element={<ShowProducts />}></Route>
+                <Route
+                  path="/indoor-plants"
+                  element={<ShowIndoorPlant />}
+                ></Route>
+                <Route
+                  path="/indoor-plants/add"
+                  element={<AddIndoorPlant />}
+                ></Route>
+                <Route
+                  path="/outdoor-plants"
+                  element={<ShowOutdoorPlant />}
+                ></Route>
+                <Route
+                  path="/outdoor-plants/add"
+                  element={<AddOutdoorPlant />}
+                ></Route>
+                <Route path="/tools" element={<ShowTool />}></Route>
+                <Route path="/tools/add" element={<AddTool />}></Route>
+                <Route
+                  path="/accessories"
+                  element={<ShowAccessories />}
+                ></Route>
+                <Route
+                  path="/accessories/add"
+                  element={<AddAccessory />}
+                ></Route>
+                <Route path="/cart" element={<Cart />}></Route>
+                <Route path="/login" element={<Login />}></Route>
+                <Route path="/search" element={<SearchPage />}></Route>
+                <Route path="/profile" element={<ProfilePage />}></Route>
+                <Route
+                  path="/order-confirmation"
+                  element={<PaymentSuccess />}
+                ></Route>
+              </Routes>
+            </BrowserRouter>
+          </OrderProvider>
         </CartProvider>
       </AuthProvider>
     </div>

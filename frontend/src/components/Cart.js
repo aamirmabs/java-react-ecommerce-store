@@ -6,6 +6,7 @@ import Axios from "axios";
 
 import { useCart } from "./../contexts/CartContext";
 import CartItem from "./CartItem";
+import { useAuth } from "./../contexts/AuthContext";
 
 const roundDecimalTo2 = (value) => {
   return parseFloat(value).toFixed(2);
@@ -13,6 +14,7 @@ const roundDecimalTo2 = (value) => {
 
 function Cart() {
   const { itemsInCart, setItemsInCart, processPayment } = useCart();
+  const { authState, setAuthState } = useAuth();
 
   const navigate = useNavigate();
 
@@ -22,7 +24,7 @@ function Cart() {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImV4cCI6MTY1MTQ1Nzc5MywiaWF0IjoxNjUxNDM5NzkzfQ.eRWMDdpM2qvjAl7uPwx5J4u-fg2tybWyw-K5kMFXFtpeZi4pro3I_YOhHgl40mDl7HjUQE8IE7bzVOxnQX_5SQ`,
+        Authorization: `Bearer ${authState.jwtToken}`,
       },
     };
 
