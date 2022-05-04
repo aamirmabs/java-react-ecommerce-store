@@ -2,10 +2,6 @@ import { createContext, useContext, useState } from "react";
 
 export const AuthContext = createContext();
 
-export function authContextFunction() {
-  console.log("authContextFunction() executed");
-}
-
 export const initialAuthContextValue = {
   userName: null,
   firstName: null,
@@ -38,6 +34,7 @@ export function AuthProvider({ children }) {
       value={{
         authState,
         setAuthState,
+        initialAuthContextValue,
       }}
     >
       {children}

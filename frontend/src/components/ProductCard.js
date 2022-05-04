@@ -17,11 +17,7 @@ function ProductCard(props) {
       <div className="flex items-end justify-center w-full">
         <img
           className="object-fill"
-          // src={"/images/products/placeholder.png"}
           src={product.imageUrl}
-          // src={
-          //   "https://res.cloudinary.com/patch-gardens/image/upload/c_fill,f_auto,h_800,q_auto:good,w_800/v1564154462/products/kentia-palm-1a5d98.jpg"
-          // }
           alt={product.name}
         ></img>
       </div>

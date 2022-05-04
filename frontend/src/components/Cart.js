@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +6,8 @@ import Axios from "axios";
 
 import { useCart } from "./../contexts/CartContext";
 import CartItem from "./CartItem";
+import { useAuth } from "./../contexts/AuthContext";
+import { useOrder } from "./../contexts/OrderContext";
 
 const roundDecimalTo2 = (value) => {
   return parseFloat(value).toFixed(2);
@@ -13,8 +15,104 @@ const roundDecimalTo2 = (value) => {
 
 function Cart() {
   const { itemsInCart, setItemsInCart, processPayment } = useCart();
+  const { authState, setAuthState } = useAuth();
+  const { orderState, setOrderState, addOrderToOrderState } = useOrder();
+  const [hasNewOrderBeenCreated, setHasNewOrderBeenCreated] = useState(false);
 
   const navigate = useNavigate();
+
+  const infoCircleIcon = <FontAwesomeIcon icon={faInfoCircle} />;
+  const crossIcon = <FontAwesomeIcon icon={faXmarkCircle} />;
+
+  // calculating total price and discount if applicable
+  let totalPrice = 0;
+  let discount = 0;
+
+  const keys = Object.keys(itemsInCart);
+  keys.forEach((key) => {
+    totalPrice += itemsInCart[key].quantity * itemsInCart[key].unitPrice;
+  });
+
+  totalPrice = roundDecimalTo2(totalPrice);
+
+  if (totalPrice > 49.99) {
+    discount = roundDecimalTo2(totalPrice * 0.2);
+  } else {
+    discount = 0;
+  }
+
+  // checking if cart is empty to display empty cart message
+  const isCartEmpty =
+    itemsInCart &&
+    Object.keys(itemsInCart).length === 0 &&
+    Object.getPrototypeOf(itemsInCart) === Object.prototype;
+
+  const cartPaymentButtonEnabledCSS =
+    "submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors";
+
+  const cartPaymentButtonDisabledCSS =
+    "submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors opacity-50 cursor-not-allowed";
+
+  // saving jsx in constants
+  const emptyCartMessageJSX = (
+    <div className="text-center px-10">
+      <p className="text-green-600 text-3xl font-bold">
+        {hasNewOrderBeenCreated
+          ? "Your order has been placed successfully!"
+          : "Your cart is empty!"}
+      </p>
+      <p className="text-green-600 text-2xl font-bold">
+        Add products to view them in the cart...
+      </p>
+
+      <Link to="/products">
+        <button className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-4 align-middle">
+          View Products Page
+        </button>
+      </Link>
+
+      {hasNewOrderBeenCreated && (
+        <Link to="/profile">
+          <button className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-4 align-middle">
+            View Orders Page
+          </button>
+        </Link>
+      )}
+    </div>
+  );
+
+  const cartItemsListJSX = (
+    <div>
+      <h1 className="py-6 border-b-2 text-xl text-gray-600 px-8">
+        Order Summary
+      </h1>
+      <ul className="py-2 border-b space-y-1 px-4">
+        {Object.keys(itemsInCart).map((key) => (
+          <CartItem
+            item={itemsInCart[key]}
+            sku={key}
+            key={itemsInCart[key].name}
+          />
+        ))}
+      </ul>
+      <div className="px-8 border-b">
+        <div className="flex justify-between py-4 text-gray-600">
+          <span>Subtotal</span>
+          <span className="font-semibold text-pink-500">£{totalPrice}</span>
+        </div>
+        <div className="flex justify-between py-4 text-gray-600">
+          <span>Discount (20%)</span>
+          <span className="font-semibold text-pink-500">
+            {discount ? "£" + discount : "N/A"}
+          </span>
+        </div>
+      </div>
+      <div className="font-semibold text-xl px-8 flex justify-between py-8 text-gray-600">
+        <span>Total</span>
+        <span>£{roundDecimalTo2(totalPrice - discount)}</span>
+      </div>
+    </div>
+  );
 
   const handleCheckout = (e) => {
     e.preventDefault();
@@ -22,7 +120,7 @@ function Cart() {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbjEyMyIsImV4cCI6MTY1MTQ1Nzc5MywiaWF0IjoxNjUxNDM5NzkzfQ.eRWMDdpM2qvjAl7uPwx5J4u-fg2tybWyw-K5kMFXFtpeZi4pro3I_YOhHgl40mDl7HjUQE8IE7bzVOxnQX_5SQ`,
+        Authorization: `Bearer ${authState.jwtToken}`,
       },
     };
 
@@ -80,82 +178,42 @@ function Cart() {
       .then((data) => {
         console.log(data);
         console.log("ORDER: " + data.orderTrackingNumber);
+        return data.orderTrackingNumber;
+      })
+      .then((orderNo) => {
+        // create an array of order items
+        let itemsArray = [];
+        const keys = Object.keys(itemsInCart);
+        keys.forEach((key) => {
+          itemsArray.push({
+            name: itemsInCart[key].name,
+            quantity: itemsInCart[key].quantity,
+            unitPrice: itemsInCart[key].unitPrice,
+          });
+        });
+
+        // add the new order to the order state
+        addOrderToOrderState(
+          orderNo,
+          totalPrice,
+          discount,
+          totalPrice - discount,
+          itemsArray
+        );
+
+        // clear the cart
+        setItemsInCart({});
+        setHasNewOrderBeenCreated(true);
+      })
+      .catch((error) => {
+        console.log("ERROR: ");
+        console.log(error);
       });
+
+    // save order to orderState
+    console.log("orderState AFTER:");
+    console.log(orderState);
   };
-
-  const infoCircleIcon = <FontAwesomeIcon icon={faInfoCircle} />;
-  const crossIcon = <FontAwesomeIcon icon={faXmarkCircle} />;
-
-  // calculating total price and discount if applicable
-  let totalPrice = 0;
-  let discount = 0;
-
-  const keys = Object.keys(itemsInCart);
-  keys.forEach((key) => {
-    totalPrice += itemsInCart[key].quantity * itemsInCart[key].unitPrice;
-  });
-
-  totalPrice = roundDecimalTo2(totalPrice);
-
-  if (totalPrice > 49.99) {
-    discount = roundDecimalTo2(totalPrice * 0.2);
-  } else {
-    discount = 0;
-  }
-
-  // checking if cart is empty to display empty cart message
-  const isCartEmpty =
-    itemsInCart &&
-    Object.keys(itemsInCart).length === 0 &&
-    Object.getPrototypeOf(itemsInCart) === Object.prototype;
-
-  // saving jsx in constants
-  const emptyCartMessageJSX = (
-    <div className="text-center px-10">
-      <p className="text-green-600 text-2xl font-bold">
-        Your cart is empty! Add products to view them in the cart...
-      </p>
-
-      <Link to="/products">
-        <button className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-4 align-middle">
-          View Products Page
-        </button>
-      </Link>
-    </div>
-  );
-
-  const cartItemsListJSX = (
-    <div>
-      <h1 className="py-6 border-b-2 text-xl text-gray-600 px-8">
-        Order Summary
-      </h1>
-      <ul className="py-2 border-b space-y-1 px-4">
-        {Object.keys(itemsInCart).map((key) => (
-          <CartItem
-            item={itemsInCart[key]}
-            sku={key}
-            key={itemsInCart[key].name}
-          />
-        ))}
-      </ul>
-      <div className="px-8 border-b">
-        <div className="flex justify-between py-4 text-gray-600">
-          <span>Subtotal</span>
-          <span className="font-semibold text-pink-500">£{totalPrice}</span>
-        </div>
-        <div className="flex justify-between py-4 text-gray-600">
-          <span>Discount (20%)</span>
-          <span className="font-semibold text-pink-500">
-            {discount ? "£" + discount : "N/A"}
-          </span>
-        </div>
-      </div>
-      <div className="font-semibold text-xl px-8 flex justify-between py-8 text-gray-600">
-        <span>Total</span>
-        <span>£{roundDecimalTo2(totalPrice - discount)}</span>
-      </div>
-    </div>
-  );
 
   return (
     <div>
@@ -300,15 +358,39 @@ function Cart() {
               </fieldset>
             </section>
           </div>
-          <button
-            className="submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors"
-            // onClick={() => {
-            //   processPayment();
-            //   navigate("/order-confirmation");
-            // }}
-          >
-            Pay £{roundDecimalTo2(totalPrice - discount)}
-          </button>
+          {authState.isAuthenticated ? (
+            <>
+              <button
+                className={
+                  isCartEmpty
+                    ? cartPaymentButtonDisabledCSS
+                    : cartPaymentButtonEnabledCSS
+                }
+              >
+                Pay £{roundDecimalTo2(totalPrice - discount)}
+              </button>
+              {isCartEmpty && (
+                <p className="text-center text-green-600 text-xs font-bold p-2 mx-auto">
+                  Add items to cart to enable payment
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              <button className={cartPaymentButtonDisabledCSS}>
+                Login to purchase goods for £
+                {roundDecimalTo2(totalPrice - discount)}
+              </button>
+              <p className="text-center">
+                <Link
+                  className="text-green-600 text-xs font-bold p-2 mx-auto"
+                  to="/login"
+                >
+                  Click here to login
+                </Link>
+              </p>
+            </>
+          )}
         </form>
         <div className="col-span-1 bg-white lg:block hidden">
           {isCartEmpty ? emptyCartMessageJSX : cartItemsListJSX}
