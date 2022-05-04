@@ -7,6 +7,7 @@ import Axios from "axios";
 import { useCart } from "./../contexts/CartContext";
 import CartItem from "./CartItem";
 import { useAuth } from "./../contexts/AuthContext";
+import { useOrder } from "./../contexts/OrderContext";
 
 const roundDecimalTo2 = (value) => {
   return parseFloat(value).toFixed(2);
@@ -15,75 +16,9 @@ const roundDecimalTo2 = (value) => {
 function Cart() {
   const { itemsInCart, setItemsInCart, processPayment } = useCart();
   const { authState, setAuthState } = useAuth();
+  const { orderState, setOrderState, addOrderToOrderState } = useOrder();
 
   const navigate = useNavigate();
-
-  const handleCheckout = (e) => {
-    e.preventDefault();
-
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authState.jwtToken}`,
-      },
-    };
-
-    const bodyParameters = {
-      customer: {
-        firstName: "John",
-        lastName: "Doe",
-        email: "test@test.com",
-      },
-      shippingAddress: {
-        street: "Ashby Street",
-        city: "Manchester",
-        state: "Lancashire",
-        country: "UK",
-        zipCode: "M143GH",
-      },
-      billingAddress: {
-        street: "Ashby Street",
-        city: "Manchester",
-        state: "Lancashire",
-        country: "UK",
-        zipCode: "M143GH",
-      },
-      order: {
-        totalPrice: 36.98,
-        totalQuantity: 2,
-      },
-      orderItems: [
-        {
-          imageUrl:
-            "assets/images/products/coffeemugs/coffeemug-luv2code-1000.png",
-          quantity: 1,
-          unitPrice: 18.99,
-          productId: 26,
-        },
-        {
-          imageUrl:
-            "assets/images/products/mousepads/mousepad-luv2code-1000.png",
-          quantity: 1,
-          unitPrice: 17.99,
-          productId: 51,
-        },
-      ],
-    };
-
-    Axios.post(
-      "http://localhost:8080/api/checkout/purchase",
-      bodyParameters,
-      config
-    )
-      .then((response) => {
-        console.log(response);
-        return response.data;
-      })
-      .then((data) => {
-        console.log(data);
-        console.log("ORDER: " + data.orderTrackingNumber);
-      });
-  };
 
   const infoCircleIcon = <FontAwesomeIcon icon={faInfoCircle} />;
   const crossIcon = <FontAwesomeIcon icon={faXmarkCircle} />;
@@ -158,6 +93,147 @@ function Cart() {
       </div>
     </div>
   );
+
+  const handleCheckout = (e) => {
+    e.preventDefault();
+
+    // save order to orderState
+    console.log("orderState BEFORE:");
+    console.log(orderState);
+
+    let orderNo = null;
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authState.jwtToken}`,
+      },
+    };
+
+    const bodyParameters = {
+      customer: {
+        firstName: "John",
+        lastName: "Doe",
+        email: "test@test.com",
+      },
+      shippingAddress: {
+        street: "Ashby Street",
+        city: "Manchester",
+        state: "Lancashire",
+        country: "UK",
+        zipCode: "M143GH",
+      },
+      billingAddress: {
+        street: "Ashby Street",
+        city: "Manchester",
+        state: "Lancashire",
+        country: "UK",
+        zipCode: "M143GH",
+      },
+      order: {
+        totalPrice: 36.98,
+        totalQuantity: 2,
+      },
+      orderItems: [
+        {
+          imageUrl:
+            "assets/images/products/coffeemugs/coffeemug-luv2code-1000.png",
+          quantity: 1,
+          unitPrice: 18.99,
+          productId: 26,
+        },
+        {
+          imageUrl:
+            "assets/images/products/mousepads/mousepad-luv2code-1000.png",
+          quantity: 1,
+          unitPrice: 17.99,
+          productId: 51,
+        },
+      ],
+    };
+
+    Axios.post(
+      "http://localhost:8080/api/checkout/purchase",
+      bodyParameters,
+      config
+    )
+      .then((response) => {
+        console.log(response);
+        return response.data;
+      })
+      .then((data) => {
+        console.log(data);
+        console.log("ORDER: " + data.orderTrackingNumber);
+        return data.orderTrackingNumber;
+      })
+      .then((orderNo) => {
+        const keys = Object.keys(itemsInCart);
+
+        console.log("Order Keys:");
+        console.log(keys);
+
+        // create an array of order items
+        let itemsArray = [];
+
+        keys.forEach((key) => {
+          itemsArray.push({
+            name: itemsInCart[key].name,
+            quantity: itemsInCart[key].quantity,
+            unitPrice: itemsInCart[key].unitPrice,
+          });
+        });
+
+        addOrderToOrderState(
+          orderNo,
+          totalPrice,
+          discount,
+          totalPrice - discount,
+          itemsArray
+        );
+
+        // keys.foreach((key) => {
+        //   console.log("key: " + key);
+        //   console.log("itemsInCart[key]: " + itemsInCart[key]);
+        //   const { name, quantity, unitPrice } = itemsInCart[key];
+
+        //   // addOrderToOrderState( orderNo, subTotal, discount, total, name, quantity, unitPrice);
+
+        //   addOrderToOrderState(
+        //     orderNo,
+        //     totalPrice,
+        //     discount,
+        //     totalPrice - discount,
+        //     name,
+        //     quantity,
+        //     unitPrice
+        //   );
+        // });
+      })
+      .catch((error) => {
+        console.log("ERROR: ");
+        console.log(error);
+      });
+
+    // save order to orderState
+    console.log("orderState AFTER:");
+    console.log(orderState);
+
+    // Object.keys(itemsInCart).foreach((key) => {
+    //   const { name, quantity, unitPrice } = itemsInCart[key];
+
+    //   // addOrderToOrderState( orderNo, subTotal, discount, total, name, quantity, unitPrice);
+
+    //   addOrderToOrderState(
+    //     orderNo,
+    //     totalPrice,
+    //     discount,
+    //     totalPrice - discount,
+    //     name,
+    //     quantity,
+    //     unitPrice
+    //   );
+    // });
+  };
 
   return (
     <div>
@@ -307,6 +383,7 @@ function Cart() {
             // onClick={() => {
             //   processPayment();
             //   navigate("/order-confirmation");
+            // orderNo, subTotal, discount, total, name, quantity, unitPrice
             // }}
           >
             Pay £{roundDecimalTo2(totalPrice - discount)}

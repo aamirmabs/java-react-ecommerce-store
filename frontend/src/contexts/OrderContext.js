@@ -37,11 +37,35 @@ export const initialOrderContextValue = {
 export function OrderProvider({ children }) {
   const [orderState, setOrderState] = useState(initialOrderContextValue);
 
+  function addOrderToOrderState(
+    orderNo,
+    subTotal,
+    discount,
+    total,
+    itemsArray
+  ) {
+    console.log("addOrderToOrderState() executed");
+
+    // create new order
+    setOrderState((prevOrderState) => {
+      return {
+        ...prevOrderState,
+        [orderNo]: {
+          subTotal,
+          discount,
+          total,
+          items: [...itemsArray],
+        },
+      };
+    });
+  }
+
   return (
     <orderContext.Provider
       value={{
         orderState,
         setOrderState,
+        addOrderToOrderState,
         initialOrderContextValue,
       }}
     >
