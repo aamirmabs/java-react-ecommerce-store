@@ -1,11 +1,42 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import OrderItem from "./OrderItem";
 import { useOrder } from "./../contexts/OrderContext";
+import { useAuth } from "./../contexts/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 function ProfilePage() {
   const { orderState } = useOrder();
+  const { authState } = useAuth();
 
-  return (
+  const globeIcon = (
+    <FontAwesomeIcon
+      icon={faGlobe}
+      className="h-5 w-5 text-green-500 group-hover:text-green-400"
+      aria-hidden="true"
+    />
+  );
+
+  const goToLoginPageMessageJSX = (
+    <div className="min-h-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <h2 className="m-6 text-center text-3xl font-extrabold text-green-700">
+        Sign in to your account to view your profile page...
+      </h2>
+      <Link
+        to="/login"
+        type="submit"
+        className="relative w-96 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+      >
+        <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+          {globeIcon}
+        </span>
+        Visit Login Page
+      </Link>
+    </div>
+  );
+
+  const profileDetailsJSX = (
     <div className="container mx-auto my-5 p-5">
       <div className="md:flex no-wrap md:-mx-2 ">
         {/* Left Side */}
@@ -139,6 +170,12 @@ function ProfilePage() {
         </div>
       </div>
     </div>
+  );
+
+  return (
+    <>
+      {authState.isAuthenticated ? profileDetailsJSX : goToLoginPageMessageJSX}
+    </>
   );
 }
 
