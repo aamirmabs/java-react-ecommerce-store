@@ -1,17 +1,12 @@
 import React from "react";
 import { useCart } from "./../contexts/CartContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 function CartItem(props) {
   const { item, sku } = props;
-  const {
-    itemsInCart,
-    setItemsInCart,
-    removeItemFromCart,
-    incrementItemCount,
-    decrementItemCount,
-  } = useCart();
+  const { removeItemFromCart, incrementItemCount, decrementItemCount } =
+    useCart();
 
   const trashCan = <FontAwesomeIcon icon={faTrashCan} />;
 

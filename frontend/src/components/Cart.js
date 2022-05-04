@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 import Axios from "axios";
@@ -14,12 +14,10 @@ const roundDecimalTo2 = (value) => {
 };
 
 function Cart() {
-  const { itemsInCart, setItemsInCart, processPayment } = useCart();
-  const { authState, setAuthState } = useAuth();
-  const { orderState, setOrderState, addOrderToOrderState } = useOrder();
+  const { itemsInCart, setItemsInCart } = useCart();
+  const { authState } = useAuth();
+  const { orderState, addOrderToOrderState } = useOrder();
   const [hasNewOrderBeenCreated, setHasNewOrderBeenCreated] = useState(false);
-
-  const navigate = useNavigate();
 
   const infoCircleIcon = <FontAwesomeIcon icon={faInfoCircle} />;
   const crossIcon = <FontAwesomeIcon icon={faXmarkCircle} />;
@@ -290,7 +288,7 @@ function Cart() {
                       placeholder="CA"
                     />
                   </label>
-                  <label className="xl:w-1/4 xl:inline-flex py-3 items-center flex xl:border-none border-t border-gray-200 py-3">
+                  <label className="xl:w-1/4 xl:inline-flex py-3 items-center flex xl:border-none border-t border-gray-200">
                     <span className="text-right px-2 xl:px-0 xl:text-none">
                       ZIP
                     </span>
