@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
@@ -17,6 +17,7 @@ function Cart() {
   const { itemsInCart, setItemsInCart, processPayment } = useCart();
   const { authState, setAuthState } = useAuth();
   const { orderState, setOrderState, addOrderToOrderState } = useOrder();
+  const [hasNewOrderBeenCreated, setHasNewOrderBeenCreated] = useState(false);
 
   const navigate = useNavigate();
 
@@ -49,8 +50,13 @@ function Cart() {
   // saving jsx in constants
   const emptyCartMessageJSX = (
     <div className="text-center px-10">
+      <p className="text-green-600 text-3xl font-bold">
+        {hasNewOrderBeenCreated
+          ? "Your order has been placed successfully!"
+          : "Your cart is empty!"}
+      </p>
       <p className="text-green-600 text-2xl font-bold">
-        Your cart is empty! Add products to view them in the cart...
+        Add products to view them in the cart...
       </p>
 
       <Link to="/products">
@@ -58,6 +64,14 @@ function Cart() {
           View Products Page
         </button>
       </Link>
+
+      {hasNewOrderBeenCreated && (
+        <Link to="/profile">
+          <button className="rounded text-white  bg-green-700 hover:bg-green-900 px-4 py-2 m-4 align-middle">
+            View Orders Page
+          </button>
+        </Link>
+      )}
     </div>
   );
 
@@ -96,12 +110,6 @@ function Cart() {
 
   const handleCheckout = (e) => {
     e.preventDefault();
-
-    // save order to orderState
-    console.log("orderState BEFORE:");
-    console.log(orderState);
-
-    let orderNo = null;
 
     const config = {
       headers: {
@@ -167,14 +175,9 @@ function Cart() {
         return data.orderTrackingNumber;
       })
       .then((orderNo) => {
-        const keys = Object.keys(itemsInCart);
-
-        console.log("Order Keys:");
-        console.log(keys);
-
         // create an array of order items
         let itemsArray = [];
-
+        const keys = Object.keys(itemsInCart);
         keys.forEach((key) => {
           itemsArray.push({
             name: itemsInCart[key].name,
@@ -183,6 +186,7 @@ function Cart() {
           });
         });
 
+        // add the new order to the order state
         addOrderToOrderState(
           orderNo,
           totalPrice,
@@ -191,23 +195,9 @@ function Cart() {
           itemsArray
         );
 
-        // keys.foreach((key) => {
-        //   console.log("key: " + key);
-        //   console.log("itemsInCart[key]: " + itemsInCart[key]);
-        //   const { name, quantity, unitPrice } = itemsInCart[key];
-
-        //   // addOrderToOrderState( orderNo, subTotal, discount, total, name, quantity, unitPrice);
-
-        //   addOrderToOrderState(
-        //     orderNo,
-        //     totalPrice,
-        //     discount,
-        //     totalPrice - discount,
-        //     name,
-        //     quantity,
-        //     unitPrice
-        //   );
-        // });
+        // clear the cart
+        setItemsInCart({});
+        setHasNewOrderBeenCreated(true);
       })
       .catch((error) => {
         console.log("ERROR: ");
@@ -217,22 +207,6 @@ function Cart() {
     // save order to orderState
     console.log("orderState AFTER:");
     console.log(orderState);
-
-    // Object.keys(itemsInCart).foreach((key) => {
-    //   const { name, quantity, unitPrice } = itemsInCart[key];
-
-    //   // addOrderToOrderState( orderNo, subTotal, discount, total, name, quantity, unitPrice);
-
-    //   addOrderToOrderState(
-    //     orderNo,
-    //     totalPrice,
-    //     discount,
-    //     totalPrice - discount,
-    //     name,
-    //     quantity,
-    //     unitPrice
-    //   );
-    // });
   };
 
   return (
@@ -378,14 +352,7 @@ function Cart() {
               </fieldset>
             </section>
           </div>
-          <button
-            className="submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors"
-            // onClick={() => {
-            //   processPayment();
-            //   navigate("/order-confirmation");
-            // orderNo, subTotal, discount, total, name, quantity, unitPrice
-            // }}
-          >
+          <button className="submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
             Pay £{roundDecimalTo2(totalPrice - discount)}
           </button>
         </form>

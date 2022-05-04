@@ -44,7 +44,9 @@ export function OrderProvider({ children }) {
     total,
     itemsArray
   ) {
-    console.log("addOrderToOrderState() executed");
+    console.log(
+      "entered OrderContext > OrderProvider > addOrderToOrderState()"
+    );
 
     // create new order
     setOrderState((prevOrderState) => {
