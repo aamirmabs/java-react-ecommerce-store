@@ -47,6 +47,12 @@ function Cart() {
     Object.keys(itemsInCart).length === 0 &&
     Object.getPrototypeOf(itemsInCart) === Object.prototype;
 
+  const cartPaymentButtonEnabledCSS =
+    "submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors";
+
+  const cartPaymentButtonDisabledCSS =
+    "submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors opacity-50 cursor-not-allowed";
+
   // saving jsx in constants
   const emptyCartMessageJSX = (
     <div className="text-center px-10">
@@ -352,9 +358,39 @@ function Cart() {
               </fieldset>
             </section>
           </div>
-          <button className="submit-button px-4 py-3 rounded-full bg-green-700 hover:bg-green-900 text-white focus:ring focus:outline-none w-full text-xl font-semibold transition-colors">
-            Pay £{roundDecimalTo2(totalPrice - discount)}
-          </button>
+          {authState.isAuthenticated ? (
+            <>
+              <button
+                className={
+                  isCartEmpty
+                    ? cartPaymentButtonDisabledCSS
+                    : cartPaymentButtonEnabledCSS
+                }
+              >
+                Pay £{roundDecimalTo2(totalPrice - discount)}
+              </button>
+              {isCartEmpty && (
+                <p className="text-center text-green-600 text-xs font-bold p-2 mx-auto">
+                  Add items to cart to enable payment
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              <button className={cartPaymentButtonDisabledCSS}>
+                Login to purchase goods for £
+                {roundDecimalTo2(totalPrice - discount)}
+              </button>
+              <p className="text-center">
+                <Link
+                  className="text-green-600 text-xs font-bold p-2 mx-auto"
+                  to="/login"
+                >
+                  Click here to login
+                </Link>
+              </p>
+            </>
+          )}
         </form>
         <div className="col-span-1 bg-white lg:block hidden">
           {isCartEmpty ? emptyCartMessageJSX : cartItemsListJSX}
